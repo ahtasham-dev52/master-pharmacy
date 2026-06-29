@@ -77,6 +77,7 @@ interface PharmacyState {
   addActivityLog: (action: string, module: string, recordId?: string, oldValue?: any, newValue?: any) => void;
   createBackup: (type: 'Local' | 'Google Drive') => void;
   restoreBackup: (backupContent: string) => boolean;
+  seedClinixInventory: () => { medicinesAdded: number; batchesAdded: number };
 
   // Customers
   customers: Customer[];
@@ -1093,6 +1094,52 @@ export const usePharmacyStore = create<PharmacyState>((set, get) => {
         pushAuditLog('Database Restore Failed', 'Settings', 'restore', null, { error: String(e) });
         return false;
       }
+    },
+
+    seedClinixInventory: () => {
+      const currentMedicines = get().medicines;
+      const currentBatches = get().batches;
+
+      let medicinesAddedCount = 0;
+      let batchesAddedCount = 0;
+
+      const updatedMedicines = [...currentMedicines];
+      const updatedBatches = [...currentBatches];
+
+      INITIAL_MEDICINES.forEach((med) => {
+        const exists = currentMedicines.some((m) => m.id === med.id);
+        if (!exists) {
+          updatedMedicines.push(med);
+          medicinesAddedCount++;
+        }
+      });
+
+      INITIAL_BATCHES.forEach((batch) => {
+        const exists = currentBatches.some((b) => b.id === batch.id);
+        if (!exists) {
+          updatedBatches.push(batch);
+          batchesAddedCount++;
+        }
+      });
+
+      if (medicinesAddedCount > 0 || batchesAddedCount > 0) {
+        set({
+          medicines: updatedMedicines,
+          batches: updatedBatches,
+        });
+        saveLocalStorage('medicines', updatedMedicines);
+        saveLocalStorage('batches', updatedBatches);
+        pushAuditLog(
+          `Imported Clinix Pharmacy inventory pack: ${medicinesAddedCount} medicines, ${batchesAddedCount} batches added.`,
+          'Settings',
+          'seed'
+        );
+      }
+
+      return {
+        medicinesAdded: medicinesAddedCount,
+        batchesAdded: batchesAddedCount,
+      };
     },
   };
 });

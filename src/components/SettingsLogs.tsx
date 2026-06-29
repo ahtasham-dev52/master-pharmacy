@@ -12,7 +12,7 @@ import {
 
 export default function SettingsLogs() {
   const { 
-    settings, updateSettings, activityLogs, restoreBackup, users 
+    settings, updateSettings, activityLogs, restoreBackup, users, seedClinixInventory 
   } = usePharmacyStore();
 
   const [taxEnabled, setTaxEnabled] = useState(settings.enableTax);
@@ -254,6 +254,26 @@ export default function SettingsLogs() {
                   onChange={handleRestoreBackupFile}
                   className="w-full text-slate-400 file:mr-3 file:py-1 file:px-2 file:rounded file:border-0 file:bg-slate-800 file:text-emerald-400 file:font-semibold hover:file:bg-slate-700 text-[10px]"
                 />
+              </div>
+
+              <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-xl space-y-2">
+                <span className="font-bold flex items-center gap-1.5 text-white">
+                  <RefreshCw className="h-4 w-4 text-emerald-400" />
+                  Clinix Pharmacy Seed Pack
+                </span>
+                <p className="text-[10px] text-slate-400 leading-relaxed">
+                  Instantly populate the active database with 12 popular local & multinational medicines (Nexum, Flagyl, Ponstan, CAC, Surbex-Z) with pre-configured FEFO batches.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const { medicinesAdded, batchesAdded } = seedClinixInventory();
+                    alert(`Successfully imported Clinix Pharmacy Inventory: ${medicinesAdded} medicines and ${batchesAdded} active inventory batches are now live in the system!`);
+                  }}
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 px-3 rounded-xl text-xs cursor-pointer text-center transition-all shadow-md shadow-emerald-500/10"
+                >
+                  Load Clinix Inventory Pack
+                </button>
               </div>
 
               <div className="p-3 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-xl space-y-1">

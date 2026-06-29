@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 export default function MedicineManager() {
-  const { medicines, addMedicine, updateMedicine, deleteMedicine } = usePharmacyStore();
+  const { medicines, addMedicine, updateMedicine, deleteMedicine, seedClinixInventory } = usePharmacyStore();
   const [search, setSearch] = useState('');
   const [dosageFilter, setDosageFilter] = useState('');
   const [originFilter, setOriginFilter] = useState('');
@@ -229,6 +229,32 @@ export default function MedicineManager() {
           </button>
         </div>
       </div>
+
+      {/* Clinix Pharmacy Seed Banner */}
+      {!medicines.some(m => m.id === 'med_nexum_40') && (
+        <div className="bg-gradient-to-r from-emerald-950 to-teal-950 border border-emerald-500/30 p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-lg animate-fade-in">
+          <div className="flex gap-3.5 items-center">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+              <RefreshCw className="h-5 w-5 text-emerald-400" />
+            </div>
+            <div>
+              <h3 className="font-bold text-white text-xs">Pre-load Clinix Pharmacy Inventory Pack</h3>
+              <p className="text-[11px] text-slate-300 mt-0.5 leading-relaxed">
+                Add 12 premium local & multinational medicines (Nexum, Flagyl, Ponstan, CAC, Surbex-Z) with pre-configured active FEFO stock batches instantly to your store catalogue.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              const { medicinesAdded, batchesAdded } = seedClinixInventory();
+              alert(`Successfully imported Clinix Pharmacy Inventory: ${medicinesAdded} medicines and ${batchesAdded} active inventory batches are now live in the system!`);
+            }}
+            className="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs transition-all cursor-pointer whitespace-nowrap shadow-md shadow-emerald-500/10"
+          >
+            Seed Clinix Inventory
+          </button>
+        </div>
+      )}
 
       {/* Search and filter toolbar */}
       <div className="bg-slate-800 p-4 rounded-xl border border-slate-700/40 flex flex-col md:flex-row gap-3.5 shadow-md">
