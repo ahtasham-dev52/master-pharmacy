@@ -1,0 +1,6 @@
+{
+  "name": "Master Pharmacy Management System",
+  "description": "Offline-first medical billing, batch-wise FEFO inventory, and supplier credit ledger system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
