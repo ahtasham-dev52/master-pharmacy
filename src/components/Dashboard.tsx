@@ -3,18 +3,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import React from 'react';
 import { usePharmacyStore } from '../store';
 import { 
-  TrendingUp, IndianRupee, AlertTriangle, Skull, PackageCheck, 
-  Users, Layers, ArrowUpRight, History, BellRing, ChevronRight
+  TrendingUp, IndianRupee, AlertTriangle, PackageCheck, 
+  Users, Layers, ChevronRight, BellRing, Pill
 } from 'lucide-react';
+import { Card, StatCard } from './UI';
 
 interface DashboardProps {
   onNavigate: (tab: string) => void;
 }
 
 export default function Dashboard({ onNavigate }: DashboardProps) {
-  const { sales, batches, suppliers, medicines, purchases, customerReturns, settings } = usePharmacyStore();
+  const { sales, batches, suppliers, medicines, settings } = usePharmacyStore();
 
   // Helper formatting PKR
   const formatPKR = (val: number) => {
@@ -38,7 +40,6 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   const totalMonthSalesVal = thisMonthSales.reduce((sum, s) => sum + s.netPayable, 0);
 
   // Profit calculations
-  // profit = saleItem.subtotal - (saleItem.baseUnitsQuantity * saleItem.purchasePricePerUnit)
   const getSaleProfit = (saleId: string) => {
     const items = usePharmacyStore.getState().saleItems.filter(si => si.saleId === saleId);
     return items.reduce((sum, item) => {
@@ -52,7 +53,6 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
 
   // Low stock
   const lowStockBatches = batches.filter(b => b.totalUnitsAvailable <= b.minimumStock && !b.deletedAt);
-  const lowStockCount = lowStockBatches.length;
 
   // Expiry stats
   const now = new Date();
@@ -93,137 +93,120 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
     .sort((a, b) => b.qty - a.qty)
     .slice(0, 5);
 
+  const todayMarginPercent = totalTodaySalesVal > 0 ? ((todayProfit / totalTodaySalesVal) * 100).toFixed(1) : '0';
+
   return (
     <div className="space-y-6 font-sans">
-      {/* App Header Bar inside UI */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-800 p-6 rounded-2xl border border-slate-700/40 gap-4">
+      
+      {/* Dashboard Top Banner */}
+      <div className="bg-white p-6 rounded-2xl border border-slate-200/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xs">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Hi, {usePharmacyStore.getState().currentUser?.username}!</h1>
-          <p className="text-slate-400 text-sm mt-1">Here is a summary of Master Pharmacy operations for today, {new Date().toLocaleDateString('en-PK', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.</p>
+          <h1 className="text-xl font-extrabold text-slate-800 tracking-tight">
+            Assalam-o-Alaikum, {usePharmacyStore.getState().currentUser?.username}!
+          </h1>
+          <p className="text-slate-500 text-xs mt-1 leading-relaxed">
+            Here is a summary of Master Pharmacy operations for today, <span className="font-bold text-slate-700">{new Date().toLocaleDateString('en-PK', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>.
+          </p>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1.5 text-xs font-mono bg-slate-900 border border-slate-700 py-1.5 px-3 rounded-lg text-slate-300">
-            <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-            Offline Server: Port 3000
-          </span>
-          <button 
-            onClick={() => onNavigate('POS Billing')}
-            className="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-emerald-500/10 cursor-pointer"
-          >
-            Launch POS Billing (F2)
-          </button>
-        </div>
+        <button 
+          onClick={() => onNavigate('pos')}
+          className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold px-5 py-3 rounded-xl text-xs transition-all shadow-md shadow-emerald-600/10 cursor-pointer whitespace-nowrap"
+        >
+          Launch POS Billing Terminal (F2)
+        </button>
       </div>
 
-      {/* Main Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Today's Sales */}
-        <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700/30 flex items-center justify-between">
-          <div className="space-y-1">
-            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Today's Sales</p>
-            <p className="text-2xl font-bold text-white font-mono">{formatPKR(totalTodaySalesVal)}</p>
-            <p className="text-xs text-emerald-400 flex items-center gap-0.5">
-              <TrendingUp className="h-3 w-3" />
-              <span>{todaySales.length} invoices processed</span>
-            </p>
-          </div>
-          <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 text-blue-400">
-            <IndianRupee className="h-6 w-6" />
-          </div>
-        </div>
+      {/* Main Responsive Stats Grid (1-column on Mobile, 2-column on Tablet, 4-column on Desktop) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          title="Today's Gross Sales"
+          value={formatPKR(totalTodaySalesVal)}
+          subtext={`${todaySales.length} billing tickets today`}
+          icon={IndianRupee}
+          badgeText="Active"
+          badgeType="success"
+        />
 
-        {/* Today's Profit */}
-        <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700/30 flex items-center justify-between">
-          <div className="space-y-1">
-            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Today's Margin Net</p>
-            <p className="text-2xl font-bold text-emerald-400 font-mono">{formatPKR(todayProfit)}</p>
-            <p className="text-xs text-slate-400">
-              Est. Profit: {totalTodaySalesVal > 0 ? ((todayProfit / totalTodaySalesVal) * 100).toFixed(1) : 0}%
-            </p>
-          </div>
-          <div className="h-12 w-12 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400">
-            <TrendingUp className="h-6 w-6" />
-          </div>
-        </div>
+        <StatCard
+          title="Today's Net Margin"
+          value={formatPKR(todayProfit)}
+          subtext={`Profit margin ratio: ${todayMarginPercent}%`}
+          icon={TrendingUp}
+          badgeText="Live profit"
+          badgeType="info"
+        />
 
-        {/* Monthly Sales */}
-        <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700/30 flex items-center justify-between">
-          <div className="space-y-1">
-            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Monthly Sales</p>
-            <p className="text-2xl font-bold text-white font-mono">{formatPKR(totalMonthSalesVal)}</p>
-            <p className="text-xs text-emerald-400 flex items-center gap-0.5">
-              <span>Net profit: {formatPKR(monthlyProfit)}</span>
-            </p>
-          </div>
-          <div className="h-12 w-12 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 text-purple-400">
-            <Layers className="h-6 w-6" />
-          </div>
-        </div>
+        <StatCard
+          title="Monthly Accumulated"
+          value={formatPKR(totalMonthSalesVal)}
+          subtext={`Net margin: ${formatPKR(monthlyProfit)}`}
+          icon={Layers}
+          badgeText="Monthly"
+          badgeType="info"
+        />
 
-        {/* Supplier Payable Balance */}
-        <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700/30 flex items-center justify-between">
-          <div className="space-y-1">
-            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Supplier Payables</p>
-            <p className="text-2xl font-bold text-rose-400 font-mono">{formatPKR(totalPayableToSuppliers)}</p>
-            <p className="text-xs text-slate-400">Outstanding credit balance</p>
-          </div>
-          <div className="h-12 w-12 rounded-xl bg-rose-500/10 flex items-center justify-center border border-rose-500/20 text-rose-400">
-            <Users className="h-6 w-6" />
-          </div>
-        </div>
+        <StatCard
+          title="Supplier Payables"
+          value={formatPKR(totalPayableToSuppliers)}
+          subtext="Total outstanding credit"
+          icon={Users}
+          badgeText={totalPayableToSuppliers > 0 ? "Credit due" : "Paid up"}
+          badgeType={totalPayableToSuppliers > 0 ? "danger" : "success"}
+        />
       </div>
 
       {/* alerts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Alerts Panel & Quick Actions */}
+        
+        {/* Left Columns: Alerts Panel & Quick Actions */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-slate-800 rounded-2xl border border-slate-700/40 p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-700/50 pb-3">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <BellRing className="h-5 w-5 text-amber-400" />
+          <Card className="space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h2 className="text-sm font-extrabold text-slate-800 flex items-center gap-2 uppercase tracking-wider">
+                <BellRing className="h-4 w-4 text-amber-500" />
                 Critical Expiry & Stock Alerts
               </h2>
-              <span className="text-xs font-mono bg-slate-900 border border-slate-700 px-2 py-0.5 rounded text-amber-300">
-                Live Stock Check
+              <span className="text-[10px] font-mono bg-slate-100 px-2 py-0.5 rounded font-bold text-slate-600 border border-slate-200">
+                FEFO Check
               </span>
             </div>
 
-            <div className="space-y-3 max-h-[280px] overflow-y-auto pr-1">
-              {/* Expired alert */}
+            <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
+              {/* Expired alerts */}
               {expiredBatches.map(b => {
                 const med = medicines.find(m => m.id === b.medicineId);
                 return (
-                  <div key={b.id} className="bg-rose-500/10 border border-rose-500/20 rounded-xl p-3.5 flex items-center justify-between">
+                  <div key={b.id} className="bg-rose-50 border border-rose-100 rounded-xl p-3 flex items-center justify-between transition-all hover:bg-rose-100/30">
                     <div className="space-y-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold uppercase px-2 py-0.5 rounded bg-rose-500 text-slate-950">EXPIRED</span>
-                        <span className="text-sm font-semibold text-white">{med?.brandName} {med?.strength}</span>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-md bg-rose-600 text-white">EXPIRED</span>
+                        <span className="text-xs font-bold text-slate-800">{med?.brandName} {med?.strength}</span>
                       </div>
-                      <p className="text-xs text-slate-400">Batch {b.batchNumber} • Expired on {b.expiryDate}</p>
+                      <p className="text-[10px] text-slate-500">Batch {b.batchNumber} • Expired: {b.expiryDate}</p>
                     </div>
                     <div className="text-right">
-                      <span className="text-sm font-bold text-rose-400 font-mono">{b.totalUnitsAvailable} units</span>
-                      <p className="text-[10px] text-slate-400">Locked from sales</p>
+                      <span className="text-xs font-extrabold text-rose-700 font-mono">{b.totalUnitsAvailable} units</span>
+                      <p className="text-[9px] text-slate-400 font-semibold uppercase tracking-wider">Blocked From POS</p>
                     </div>
                   </div>
                 );
               })}
 
-              {/* Expiring soon */}
+              {/* Expiring soon alerts */}
               {expiringSoonBatches.map(b => {
                 const med = medicines.find(m => m.id === b.medicineId);
                 return (
-                  <div key={b.id} className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3.5 flex items-center justify-between">
+                  <div key={b.id} className="bg-amber-50 border border-amber-100 rounded-xl p-3 flex items-center justify-between transition-all hover:bg-amber-100/30">
                     <div className="space-y-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold uppercase px-2 py-0.5 rounded bg-amber-500 text-slate-950">NEAR EXPIRY</span>
-                        <span className="text-sm font-semibold text-white">{med?.brandName} {med?.strength}</span>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-md bg-amber-500 text-slate-900">NEAR EXPIRY</span>
+                        <span className="text-xs font-bold text-slate-800">{med?.brandName} {med?.strength}</span>
                       </div>
-                      <p className="text-xs text-slate-400">Batch {b.batchNumber} • Expiry {b.expiryDate}</p>
+                      <p className="text-[10px] text-slate-500">Batch {b.batchNumber} • Expiry: {b.expiryDate}</p>
                     </div>
                     <div className="text-right">
-                      <span className="text-sm font-bold text-amber-400 font-mono">{b.totalUnitsAvailable} units</span>
-                      <p className="text-[10px] text-slate-400">FEFO Auto-prioritized</p>
+                      <span className="text-xs font-extrabold text-amber-700 font-mono">{b.totalUnitsAvailable} units</span>
+                      <p className="text-[9px] text-slate-400 font-semibold uppercase tracking-wider">Prioritize Sale</p>
                     </div>
                   </div>
                 );
@@ -233,98 +216,102 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
               {lowStockBatches.filter(b => !b.isExpired && b.totalUnitsAvailable > 0).map(b => {
                 const med = medicines.find(m => m.id === b.medicineId);
                 return (
-                  <div key={b.id} className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3.5 flex items-center justify-between">
+                  <div key={b.id} className="bg-sky-50 border border-sky-100 rounded-xl p-3 flex items-center justify-between transition-all hover:bg-sky-100/30">
                     <div className="space-y-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold uppercase px-2 py-0.5 rounded bg-blue-500 text-slate-950">LOW STOCK</span>
-                        <span className="text-sm font-semibold text-white">{med?.brandName} {med?.strength}</span>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-md bg-sky-500 text-white">LOW STOCK</span>
+                        <span className="text-xs font-bold text-slate-800">{med?.brandName} {med?.strength}</span>
                       </div>
-                      <p className="text-xs text-slate-400">Batch {b.batchNumber} • Supplier Balance Minimum Alert</p>
+                      <p className="text-[10px] text-slate-500">Batch {b.batchNumber} • Minimum stock threshold alert</p>
                     </div>
                     <div className="text-right">
-                      <span className="text-sm font-bold text-blue-400 font-mono">{b.totalUnitsAvailable} units</span>
-                      <p className="text-[10px] text-slate-400">Threshold: {b.minimumStock}</p>
+                      <span className="text-xs font-extrabold text-sky-700 font-mono">{b.totalUnitsAvailable} units</span>
+                      <p className="text-[9px] text-slate-400">Min Alert: {b.minimumStock}</p>
                     </div>
                   </div>
                 );
               })}
 
               {expiredBatches.length === 0 && expiringSoonBatches.length === 0 && lowStockBatches.length === 0 && (
-                <div className="text-center py-8 text-slate-500">
+                <div className="text-center py-10 text-slate-400">
                   <PackageCheck className="h-10 w-10 text-emerald-500/20 mx-auto mb-2" />
-                  <p className="text-sm font-medium">All medicines and batches are in excellent state.</p>
-                  <p className="text-xs">No expiries or low stock alerts within 60 days.</p>
+                  <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">All Drug Batches Excellent</p>
+                  <p className="text-[10px] text-slate-400 mt-1">No low-stock or expiring batches identified inside the catalog.</p>
                 </div>
               )}
             </div>
-          </div>
+          </Card>
 
           {/* Business Inventory Value Summaries */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700/30">
-              <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Total Drug Stock Valuation</h3>
-              <p className="text-2xl font-bold text-white font-mono">{formatPKR(totalInventoryValue)}</p>
-              <p className="text-xs text-slate-400 mt-1">Calculated batch-wise at actual cost price</p>
-            </div>
-            <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700/30">
-              <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Total System Catalog</h3>
-              <p className="text-2xl font-bold text-white font-mono">{medicines.length} Medicines</p>
-              <p className="text-xs text-slate-400 mt-1">{batches.length} individual batch entries monitored</p>
-            </div>
+            <Card className="p-5 flex flex-col justify-between">
+              <div>
+                <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Drug Stock Valuation</h3>
+                <p className="text-xl font-extrabold text-slate-800 font-mono mt-2">{formatPKR(totalInventoryValue)}</p>
+              </div>
+              <p className="text-[10px] text-slate-400 mt-3 font-semibold">Calculated batch-wise at actual cost price</p>
+            </Card>
+            <Card className="p-5 flex flex-col justify-between">
+              <div>
+                <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total System Catalog</h3>
+                <p className="text-xl font-extrabold text-slate-800 font-mono mt-2">{medicines.length} Medicines</p>
+              </div>
+              <p className="text-[10px] text-slate-400 mt-3 font-semibold">{batches.length} individual batch entries monitored</p>
+            </Card>
           </div>
         </div>
 
         {/* Right Column: Top Medicines & Recent Sales */}
         <div className="space-y-6">
           {/* Top Selling Medicines */}
-          <div className="bg-slate-800 rounded-2xl border border-slate-700/40 p-5">
-            <h2 className="text-lg font-bold text-white border-b border-slate-700/50 pb-3 mb-4">
+          <Card>
+            <h2 className="text-sm font-extrabold text-slate-800 border-b border-slate-100 pb-3 mb-4 uppercase tracking-wider">
               Top Selling Medicines
             </h2>
             <div className="space-y-4">
               {topSellingList.map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between">
+                <div key={idx} className="flex items-center justify-between border-b border-slate-50 pb-2.5 last:border-0 last:pb-0">
                   <div className="space-y-0.5">
-                    <p className="text-sm font-semibold text-white">{item.brandName}</p>
-                    <p className="text-xs text-slate-400">{item.company}</p>
+                    <p className="text-xs font-bold text-slate-800">{item.brandName}</p>
+                    <p className="text-[10px] text-slate-400">{item.company}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-emerald-400 font-mono">{formatPKR(item.revenue)}</p>
-                    <p className="text-[10px] text-slate-400">{item.qty} tabs sold</p>
+                    <p className="text-xs font-extrabold text-emerald-600 font-mono">{formatPKR(item.revenue)}</p>
+                    <p className="text-[9px] text-slate-500 font-semibold">{item.qty} base units sold</p>
                   </div>
                 </div>
               ))}
               {topSellingList.length === 0 && (
-                <p className="text-sm text-slate-500 text-center py-6">No sales completed yet to rank medicines.</p>
+                <p className="text-[11px] text-slate-400 text-center py-6">No sales completed yet to rank medicines.</p>
               )}
             </div>
-          </div>
+          </Card>
 
           {/* Quick Operations Links */}
-          <div className="bg-slate-800 rounded-2xl border border-slate-700/40 p-5 space-y-3">
-            <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1">POS Fast Links</h2>
+          <Card className="space-y-2.5">
+            <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">POS Fast Links</h2>
             <button 
-              onClick={() => onNavigate('Inventory')}
-              className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-700/40 text-slate-300 hover:text-white hover:bg-slate-700/40 transition-all text-sm group"
+              onClick={() => onNavigate('inventory')}
+              className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition-all text-xs group cursor-pointer border border-slate-100"
             >
               <span>Add Opening Stock / Batches</span>
-              <ChevronRight className="h-4 w-4 text-slate-500 group-hover:text-emerald-400 transition-all" />
+              <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-all" />
             </button>
             <button 
-              onClick={() => onNavigate('Suppliers')}
-              className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-700/40 text-slate-300 hover:text-white hover:bg-slate-700/40 transition-all text-sm group"
+              onClick={() => onNavigate('suppliers')}
+              className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition-all text-xs group cursor-pointer border border-slate-100"
             >
               <span>Log Supplier Credit & Payments</span>
-              <ChevronRight className="h-4 w-4 text-slate-500 group-hover:text-emerald-400 transition-all" />
+              <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-all" />
             </button>
             <button 
-              onClick={() => onNavigate('Reports')}
-              className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-700/40 text-slate-300 hover:text-white hover:bg-slate-700/40 transition-all text-sm group"
+              onClick={() => onNavigate('reports')}
+              className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition-all text-xs group cursor-pointer border border-slate-100"
             >
               <span>View Profit & Expiry Forecasts</span>
-              <ChevronRight className="h-4 w-4 text-slate-500 group-hover:text-emerald-400 transition-all" />
+              <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-all" />
             </button>
-          </div>
+          </Card>
         </div>
       </div>
     </div>

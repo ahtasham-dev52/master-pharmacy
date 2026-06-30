@@ -173,19 +173,19 @@ export default function SupplierLedger() {
   const activeLedger = supplierLedgers.filter(l => l.supplierId === activeSupplierId);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 font-sans">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 font-sans text-xs text-slate-800">
       
       {/* LEFT COLUMN: Suppliers Listing */}
       <div className="lg:col-span-1 space-y-5">
-        <div className="bg-slate-800 rounded-2xl border border-slate-700/40 p-5 space-y-4 shadow-xl">
-          <div className="flex justify-between items-center border-b border-slate-700/50 pb-3">
-            <h2 className="text-md font-bold text-white flex items-center gap-1.5">
-              <Users className="h-5 w-5 text-emerald-400" />
+        <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 shadow-xs">
+          <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+            <h2 className="text-sm font-extrabold text-slate-800 flex items-center gap-1.5 uppercase tracking-wider">
+              <Users className="h-4.5 w-4.5 text-emerald-600" />
               Drug Distributors
             </h2>
             <button
               onClick={() => setShowAddModal(true)}
-              className="p-1.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-lg cursor-pointer"
+              className="p-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg cursor-pointer"
               title="Add supplier"
             >
               <Plus className="h-3.5 w-3.5" />
@@ -201,21 +201,21 @@ export default function SupplierLedger() {
                   onClick={() => setActiveSupplierId(s.id)}
                   className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
                     isActive 
-                      ? 'bg-emerald-500/10 border-emerald-500/30' 
-                      : 'bg-slate-900/40 border-slate-700/40 hover:bg-slate-700/35'
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-sm' 
+                      : 'bg-slate-50 border-slate-200 hover:bg-slate-100/50 text-slate-700'
                   }`}
                 >
                   <div className="flex justify-between items-start">
                     <div>
-                      <p className="font-bold text-white text-sm">{s.name}</p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">{s.companyName}</p>
-                      <p className="text-[10px] text-slate-500 font-mono mt-1">Ph: {s.phone}</p>
+                      <p className={`font-bold text-sm ${isActive ? 'text-white' : 'text-slate-800'}`}>{s.name}</p>
+                      <p className={`text-[10px] mt-0.5 ${isActive ? 'text-slate-300' : 'text-slate-500'}`}>{s.companyName}</p>
+                      <p className={`text-[10px] font-mono mt-1 ${isActive ? 'text-slate-300' : 'text-slate-400'}`}>Ph: {s.phone}</p>
                     </div>
                     <div className="text-right">
-                      <span className={`font-bold font-mono text-[11px] ${s.currentPayableBalance > 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
+                      <span className={`font-bold font-mono text-[11px] ${isActive ? 'text-emerald-300' : s.currentPayableBalance > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
                         {formatPKR(s.currentPayableBalance)}
                       </span>
-                      <p className="text-[9px] text-slate-500 uppercase font-mono mt-0.5">Payable Balance</p>
+                      <p className={`text-[9px] uppercase font-mono mt-0.5 ${isActive ? 'text-slate-300' : 'text-slate-400'}`}>Payable</p>
                     </div>
                   </div>
                 </div>
@@ -231,7 +231,7 @@ export default function SupplierLedger() {
                   setShowPayModal(true);
                 }
               }}
-              className="py-3 px-1 text-center bg-slate-900 hover:bg-slate-700 border border-slate-700 font-bold text-slate-300 rounded-xl transition-all cursor-pointer"
+              className="py-3 px-1 text-center bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-slate-700 rounded-xl transition-all cursor-pointer"
             >
               Log Payment
             </button>
@@ -242,7 +242,7 @@ export default function SupplierLedger() {
                   setShowPurModal(true);
                 }
               }}
-              className="py-3 px-1 text-center bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl transition-all cursor-pointer"
+              className="py-3 px-1 text-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-all cursor-pointer shadow-xs"
             >
               Log Purchase
             </button>
@@ -253,63 +253,63 @@ export default function SupplierLedger() {
       {/* RIGHT COLUMN: Ledger entries */}
       <div className="lg:col-span-2">
         {activeSupplier ? (
-          <div className="bg-slate-800 rounded-2xl border border-slate-700/40 p-5 space-y-6 shadow-xl">
-            <div className="flex justify-between items-start border-b border-slate-700/50 pb-4">
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-6 shadow-xs">
+            <div className="flex justify-between items-start border-b border-slate-100 pb-4">
               <div>
-                <h2 className="text-lg font-bold text-white">{activeSupplier.name}</h2>
-                <p className="text-slate-400 text-xs mt-0.5">Company representation: {activeSupplier.companyName}</p>
-                <p className="text-[10px] text-slate-500 font-mono mt-1">{activeSupplier.address}</p>
+                <h2 className="text-base font-extrabold text-slate-800">{activeSupplier.name}</h2>
+                <p className="text-slate-500 text-xs mt-0.5">Company representation: {activeSupplier.companyName}</p>
+                <p className="text-[10px] text-slate-400 font-mono mt-1">{activeSupplier.address}</p>
               </div>
               <div className="text-right space-y-1">
                 <span className="text-[10px] text-slate-400 uppercase font-mono block">Payable Balance</span>
-                <span className="text-2xl font-bold font-mono text-rose-400">{formatPKR(activeSupplier.currentPayableBalance)}</span>
+                <span className="text-xl font-extrabold font-mono text-rose-600">{formatPKR(activeSupplier.currentPayableBalance)}</span>
               </div>
             </div>
 
             {/* Transactions entries table */}
             <div className="space-y-3.5">
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 font-mono">
+              <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 font-mono">
                 <History className="h-4 w-4 text-slate-400" />
                 Distributor Accounting Ledger
               </h3>
               
-              <div className="border border-slate-700/60 rounded-xl overflow-hidden">
+              <div className="border border-slate-200 rounded-xl overflow-hidden">
                 <table className="w-full text-left border-collapse font-mono text-xs">
                   <thead>
-                    <tr className="bg-slate-900/50 text-slate-400 border-b border-slate-700">
+                    <tr className="bg-slate-50 text-slate-500 border-b border-slate-200 font-bold">
                       <th className="p-3">Date</th>
                       <th className="p-3">Type</th>
                       <th className="p-3">Description</th>
-                      <th className="p-3 text-right">Debit (Payment)</th>
-                      <th className="p-3 text-right">Credit (Credit Cost)</th>
+                      <th className="p-3 text-right">Debit (Paid)</th>
+                      <th className="p-3 text-right">Credit (Cost)</th>
                       <th className="p-3 text-right">Balance</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800 text-slate-300">
+                  <tbody className="divide-y divide-slate-100 text-slate-600">
                     {activeLedger.map(entry => (
-                      <tr key={entry.id} className="hover:bg-slate-700/15 transition-all">
+                      <tr key={entry.id} className="hover:bg-slate-50 transition-all">
                         <td className="p-3 text-slate-400">{new Date(entry.date).toLocaleDateString('en-PK')}</td>
                         <td className="p-3 font-bold uppercase text-[10px]">
-                          <span className={`px-2 py-0.5 rounded ${
+                          <span className={`px-2 py-0.5 rounded text-[9px] ${
                             entry.type === 'Payment' 
-                              ? 'bg-emerald-500/15 text-emerald-400' 
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' 
                               : entry.type === 'Return'
-                                ? 'bg-blue-500/15 text-blue-400'
-                                : 'bg-rose-500/15 text-rose-400'
+                                ? 'bg-blue-50 text-blue-700 border border-blue-100'
+                                : 'bg-rose-50 text-rose-700 border border-rose-100'
                           }`}>
                             {entry.type}
                           </span>
                         </td>
                         <td className="p-3 font-sans max-w-[200px] truncate" title={entry.description}>{entry.description}</td>
-                        <td className="p-3 text-right text-emerald-400 font-bold">{entry.debit > 0 ? formatPKR(entry.debit) : '-'}</td>
-                        <td className="p-3 text-right text-rose-400 font-bold">{entry.credit > 0 ? formatPKR(entry.credit) : '-'}</td>
-                        <td className="p-3 text-right text-white font-bold">{formatPKR(entry.runningBalance)}</td>
+                        <td className="p-3 text-right text-emerald-600 font-bold">{entry.debit > 0 ? formatPKR(entry.debit) : '-'}</td>
+                        <td className="p-3 text-right text-rose-600 font-bold">{entry.credit > 0 ? formatPKR(entry.credit) : '-'}</td>
+                        <td className="p-3 text-right text-slate-800 font-bold">{formatPKR(entry.runningBalance)}</td>
                       </tr>
                     ))}
 
                     {activeLedger.length === 0 && (
                       <tr>
-                        <td colSpan={6} className="text-center py-10 text-slate-500 font-sans">
+                        <td colSpan={6} className="text-center py-10 text-slate-400 font-sans">
                           No accounting ledger statements recorded for this supplier.
                         </td>
                       </tr>
@@ -320,95 +320,95 @@ export default function SupplierLedger() {
             </div>
           </div>
         ) : (
-          <div className="bg-slate-800 rounded-2xl border border-slate-700/40 p-12 text-center text-slate-500 flex flex-col items-center justify-center h-full min-h-[300px]">
-            <Landmark className="h-12 w-12 text-slate-600 mb-3 opacity-35" />
-            <p className="text-sm font-semibold">No Distributor Selected</p>
-            <p className="text-xs mt-1">Select a drug supplier from the sidebar to view ledgers and log wholesale invoices.</p>
+          <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center text-slate-400 flex flex-col items-center justify-center h-full min-h-[300px] shadow-xs">
+            <Landmark className="h-12 w-12 text-slate-300 mb-3 opacity-60" />
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">No Distributor Selected</p>
+            <p className="text-[10px] text-slate-400 mt-1">Select a drug supplier from the sidebar to view ledgers and log wholesale invoices.</p>
           </div>
         )}
       </div>
 
       {/* MODAL 1: ADD SUPPLIER */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl p-6">
-            <div className="flex justify-between items-center border-b border-slate-700/50 pb-3 mb-4">
-              <h3 className="text-lg font-bold text-white">Add Supplier / Distributor</h3>
-              <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-white cursor-pointer">
-                <X className="h-5 w-5" />
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-2xl p-6">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+              <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Add Supplier / Distributor</h3>
+              <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="h-4 w-4" />
               </button>
             </div>
 
             <form onSubmit={handleAddSupplier} className="space-y-4 text-xs font-sans">
               <div className="space-y-1">
-                <label className="text-slate-400 font-semibold uppercase">Supplier Name *</label>
+                <label className="text-slate-500 font-bold uppercase text-[10px]">Supplier Name *</label>
                 <input
                   type="text"
                   required
                   value={supFormData.name}
                   onChange={(e) => setSupFormData({ ...supFormData, name: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                   placeholder="e.g. Searle Authorized Agency"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3.5">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Phone Number *</label>
+                  <label className="text-slate-500 font-bold uppercase text-[10px]">Phone Number *</label>
                   <input
                     type="text"
                     required
                     value={supFormData.phone}
                     onChange={(e) => setSupFormData({ ...supFormData, phone: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:outline-none"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="03001234567"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Represented Company</label>
+                  <label className="text-slate-500 font-bold uppercase text-[10px]">Represented Company</label>
                   <input
                     type="text"
                     value={supFormData.companyName}
                     onChange={(e) => setSupFormData({ ...supFormData, companyName: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="e.g. Searle Ltd."
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-400 font-semibold uppercase">Address</label>
+                <label className="text-slate-500 font-bold uppercase text-[10px]">Address</label>
                 <input
                   type="text"
                   value={supFormData.address}
                   onChange={(e) => setSupFormData({ ...supFormData, address: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                   placeholder="Address details"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-400 font-semibold uppercase">Opening Balance Credit (PKR)</label>
+                <label className="text-slate-500 font-bold uppercase text-[10px]">Opening Balance Credit (PKR)</label>
                 <input
                   type="number"
                   value={supFormData.openingBalance || ''}
                   onChange={(e) => setSupFormData({ ...supFormData, openingBalance: parseFloat(e.target.value) || 0 })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:outline-none"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500"
                   placeholder="Initial payable credit if any"
                 />
               </div>
 
-              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-700/50">
+              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="bg-slate-900 hover:bg-slate-700 text-slate-300 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-5 py-2.5 rounded-xl shadow-lg cursor-pointer"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/10 cursor-pointer"
                 >
                   Save Distributor
                 </button>
@@ -420,23 +420,23 @@ export default function SupplierLedger() {
 
       {/* MODAL 2: LOG SUPPLIER PAYMENT */}
       {showPayModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl p-6">
-            <div className="flex justify-between items-center border-b border-slate-700/50 pb-3 mb-4">
-              <h3 className="text-lg font-bold text-white">Log Supplier Payment</h3>
-              <button onClick={() => setShowPayModal(false)} className="text-slate-400 hover:text-white cursor-pointer">
-                <X className="h-5 w-5" />
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-2xl p-6">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+              <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Log Supplier Payment</h3>
+              <button onClick={() => setShowPayModal(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="h-4 w-4" />
               </button>
             </div>
 
             <form onSubmit={handlePaySubmit} className="space-y-4 text-xs font-sans">
               <div className="space-y-1">
-                <label className="text-slate-400 font-semibold uppercase">Select Supplier *</label>
+                <label className="text-slate-500 font-bold uppercase text-[10px]">Select Supplier *</label>
                 <select
                   required
                   value={payFormData.supplierId}
                   onChange={(e) => setPayFormData({ ...payFormData, supplierId: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-bold"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-bold cursor-pointer"
                 >
                   {suppliers.filter(s => !s.deletedAt).map(s => (
                     <option key={s.id} value={s.id}>{s.name} (Bal: {formatPKR(s.currentPayableBalance)})</option>
@@ -446,22 +446,22 @@ export default function SupplierLedger() {
 
               <div className="grid grid-cols-2 gap-3.5">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Amount Paid (PKR) *</label>
+                  <label className="text-slate-500 font-bold uppercase text-[10px]">Amount Paid (PKR) *</label>
                   <input
                     type="number"
                     required
                     value={payFormData.amountPaid || ''}
                     onChange={(e) => setPayFormData({ ...payFormData, amountPaid: parseFloat(e.target.value) || 0 })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono font-bold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="Enter cash payment"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Payment Method *</label>
+                  <label className="text-slate-500 font-bold uppercase text-[10px]">Payment Method *</label>
                   <select
                     value={payFormData.paymentMethod}
                     onChange={(e) => setPayFormData({ ...payFormData, paymentMethod: e.target.value as any })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
                   >
                     <option value="Cash">Cash</option>
                     <option value="Bank Transfer">Bank Transfer</option>
@@ -471,38 +471,38 @@ export default function SupplierLedger() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-400 font-semibold uppercase">Reference # (Cheque/Tx ID)</label>
+                <label className="text-slate-500 font-bold uppercase text-[10px]">Reference # (Cheque/Tx ID)</label>
                 <input
                   type="text"
                   value={payFormData.referenceNumber}
                   onChange={(e) => setPayFormData({ ...payFormData, referenceNumber: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500"
                   placeholder="Tx ID or cheque number"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-400 font-semibold uppercase">Notes</label>
+                <label className="text-slate-500 font-bold uppercase text-[10px]">Notes</label>
                 <input
                   type="text"
                   value={payFormData.notes}
                   onChange={(e) => setPayFormData({ ...payFormData, notes: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                   placeholder="Memo details"
                 />
               </div>
 
-              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-700/50">
+              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowPayModal(false)}
-                  className="bg-slate-900 hover:bg-slate-700 text-slate-300 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-5 py-2.5 rounded-xl shadow-lg cursor-pointer"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/10 cursor-pointer"
                 >
                   Post Payment
                 </button>
@@ -514,24 +514,24 @@ export default function SupplierLedger() {
 
       {/* MODAL 3: LOG CREDIT PURCHASE INVOICE */}
       {showPurModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="w-full max-w-2xl bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl p-6 my-8 flex flex-col max-h-[85vh]">
-            <div className="flex justify-between items-center border-b border-slate-700/50 pb-3 mb-4">
-              <h3 className="text-lg font-bold text-white">Log Purchase Invoice & Stocks</h3>
-              <button onClick={() => setShowPurModal(false)} className="text-slate-400 hover:text-white cursor-pointer">
-                <X className="h-5 w-5" />
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-2xl bg-white rounded-2xl border border-slate-200 shadow-2xl p-6 my-8 flex flex-col max-h-[85vh]">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+              <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Log Purchase Invoice & Stocks</h3>
+              <button onClick={() => setShowPurModal(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="h-4 w-4" />
               </button>
             </div>
 
             <form onSubmit={handlePurchaseSubmit} className="space-y-4 text-xs font-sans overflow-y-auto flex-1 pr-1">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Supplier/Distributor *</label>
+                  <label className="text-slate-500 font-bold uppercase text-[10px]">Supplier/Distributor *</label>
                   <select
                     required
                     value={purFormData.supplierId}
                     onChange={(e) => setPurFormData({ ...purFormData, supplierId: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-bold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
                   >
                     {suppliers.filter(s => !s.deletedAt).map(s => (
                       <option key={s.id} value={s.id}>{s.name}</option>
@@ -539,13 +539,13 @@ export default function SupplierLedger() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Distributor Invoice Number *</label>
+                  <label className="text-slate-500 font-bold uppercase text-[10px]">Distributor Invoice Number *</label>
                   <input
                     type="text"
                     required
                     value={purFormData.invoiceNumber}
                     onChange={(e) => setPurFormData({ ...purFormData, invoiceNumber: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono font-bold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="e.g. GSK-99172"
                   />
                 </div>
@@ -553,36 +553,36 @@ export default function SupplierLedger() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Total Invoice Value (PKR) *</label>
+                  <label className="text-slate-500 font-bold uppercase text-[10px]">Total Invoice Value (PKR) *</label>
                   <input
                     type="number"
                     required
                     value={purFormData.totalAmount || ''}
                     onChange={(e) => setPurFormData({ ...purFormData, totalAmount: parseFloat(e.target.value) || 0 })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono font-bold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="e.g. 50000"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Paid Amount (PKR)</label>
+                  <label className="text-slate-500 font-bold uppercase text-[10px]">Paid Amount (PKR)</label>
                   <input
                     type="number"
                     value={purFormData.paidAmount || ''}
                     onChange={(e) => setPurFormData({ ...purFormData, paidAmount: parseFloat(e.target.value) || 0 })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="0 for full credit"
                   />
                 </div>
               </div>
 
               {/* Purchase Items sub form */}
-              <div className="space-y-3.5 border-t border-slate-700/50 pt-4">
+              <div className="space-y-3.5 border-t border-slate-100 pt-4">
                 <div className="flex justify-between items-center">
-                  <h4 className="font-bold text-white text-xs uppercase tracking-wider">Purchase Items / Batches</h4>
+                  <h4 className="font-bold text-slate-800 text-xs uppercase tracking-wider">Purchase Items / Batches</h4>
                   <button
                     type="button"
                     onClick={handleAddPurchaseItem}
-                    className="text-xs bg-slate-900 hover:bg-slate-700 border border-slate-700 text-emerald-400 px-3 py-1.5 rounded-lg cursor-pointer"
+                    className="text-[10px] bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg cursor-pointer font-bold uppercase tracking-wider"
                   >
                     + Add Drug Row
                   </button>
@@ -590,11 +590,11 @@ export default function SupplierLedger() {
 
                 <div className="space-y-3">
                   {purItems.map((item, idx) => (
-                    <div key={idx} className="bg-slate-900/50 p-3.5 rounded-xl border border-slate-700/40 space-y-3 relative">
+                    <div key={idx} className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3 relative">
                       <button
                         type="button"
                         onClick={() => handleRemovePurchaseItem(idx)}
-                        className="absolute right-2 top-2 text-rose-400 hover:text-rose-300"
+                        className="absolute right-2 top-2 text-rose-600 hover:text-rose-800 cursor-pointer"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -610,7 +610,7 @@ export default function SupplierLedger() {
                               copy[idx].medicineId = e.target.value;
                               setPurItems(copy);
                             }}
-                            className="w-full bg-slate-800 border border-slate-700 rounded p-2 text-xs text-white"
+                            className="w-full bg-white border border-slate-200 rounded p-2 text-xs text-slate-700 cursor-pointer"
                           >
                             <option value="">-- Choose Drug --</option>
                             {medicines.filter(m => !m.deletedAt).map(m => (
@@ -629,7 +629,7 @@ export default function SupplierLedger() {
                               copy[idx].batchNumber = e.target.value;
                               setPurItems(copy);
                             }}
-                            className="w-full bg-slate-800 border border-slate-700 rounded p-2 text-xs text-white font-mono"
+                            className="w-full bg-white border border-slate-200 rounded p-2 text-xs text-slate-800 font-mono"
                             placeholder="GSK-206"
                           />
                         </div>
@@ -647,7 +647,7 @@ export default function SupplierLedger() {
                               copy[idx].expiryDate = e.target.value;
                               setPurItems(copy);
                             }}
-                            className="w-full bg-slate-800 border border-slate-700 rounded p-1 text-white font-mono h-8"
+                            className="w-full bg-white border border-slate-200 rounded p-1 text-slate-800 font-mono h-8 cursor-pointer"
                           />
                         </div>
                         <div className="space-y-1">
@@ -661,7 +661,7 @@ export default function SupplierLedger() {
                               copy[idx].quantityBoxes = parseInt(e.target.value) || 1;
                               setPurItems(copy);
                             }}
-                            className="w-full bg-slate-800 border border-slate-700 rounded p-1 text-white font-mono h-8 text-center"
+                            className="w-full bg-white border border-slate-200 rounded p-1 text-slate-800 font-mono h-8 text-center"
                           />
                         </div>
                         <div className="space-y-1">
@@ -676,7 +676,7 @@ export default function SupplierLedger() {
                               copy[idx].purchasePricePerUnit = parseFloat(e.target.value) || 0;
                               setPurItems(copy);
                             }}
-                            className="w-full bg-slate-800 border border-slate-700 rounded p-1 text-white font-mono h-8 text-center"
+                            className="w-full bg-white border border-slate-200 rounded p-1 text-slate-800 font-mono h-8 text-center"
                           />
                         </div>
                         <div className="space-y-1">
@@ -691,7 +691,7 @@ export default function SupplierLedger() {
                               copy[idx].sellingPricePerUnit = parseFloat(e.target.value) || 0;
                               setPurItems(copy);
                             }}
-                            className="w-full bg-slate-800 border border-slate-700 rounded p-1 text-white font-mono h-8 text-center"
+                            className="w-full bg-white border border-slate-200 rounded p-1 text-slate-800 font-mono h-8 text-center"
                           />
                         </div>
                       </div>
@@ -700,17 +700,17 @@ export default function SupplierLedger() {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-700/50 mt-4">
+              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100 mt-4">
                 <button
                   type="button"
                   onClick={() => setShowPurModal(false)}
-                  className="bg-slate-900 hover:bg-slate-700 text-slate-300 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-5 py-2.5 rounded-xl shadow-lg cursor-pointer"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/10 cursor-pointer"
                 >
                   Log Invoice & Restock
                 </button>

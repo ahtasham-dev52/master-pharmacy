@@ -207,22 +207,22 @@ export default function MedicineManager() {
   return (
     <div className="space-y-6 font-sans">
       {/* Upper header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-800 p-5 rounded-2xl border border-slate-700/40 gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-5 rounded-2xl border border-slate-200 gap-4 shadow-xs">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight">Medicine Catalogue Manager</h1>
-          <p className="text-slate-400 text-xs mt-0.5">Manage the master directory of medicines, drugs, generic pairings, and origins.</p>
+          <h1 className="text-lg font-extrabold text-slate-800 tracking-tight">Medicine Catalogue Manager</h1>
+          <p className="text-slate-500 text-xs mt-0.5">Manage the master directory of medicines, drugs, generic pairings, and origins.</p>
         </div>
         <div className="flex gap-2 text-xs">
           <button
             onClick={() => setShowImportModal(true)}
-            className="flex items-center gap-1 bg-slate-900 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer"
+            className="flex items-center gap-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer"
           >
             <UploadCloud className="h-4 w-4" />
             CSV Import
           </button>
           <button
             onClick={handleOpenAdd}
-            className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer"
+            className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer"
           >
             <Plus className="h-4 w-4" />
             Add New Drug
@@ -232,14 +232,14 @@ export default function MedicineManager() {
 
       {/* Clinix Pharmacy Seed Banner */}
       {!medicines.some(m => m.id === 'med_nexum_40') && (
-        <div className="bg-gradient-to-r from-emerald-950 to-teal-950 border border-emerald-500/30 p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-lg animate-fade-in">
+        <div className="bg-emerald-50 border border-emerald-200 p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xs animate-fade-in">
           <div className="flex gap-3.5 items-center">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
-              <RefreshCw className="h-5 w-5 text-emerald-400" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center shrink-0">
+              <RefreshCw className="h-5 w-5 text-emerald-700" />
             </div>
             <div>
-              <h3 className="font-bold text-white text-xs">Pre-load Clinix Pharmacy Inventory Pack</h3>
-              <p className="text-[11px] text-slate-300 mt-0.5 leading-relaxed">
+              <h3 className="font-extrabold text-slate-800 text-xs">Pre-load Clinix Pharmacy Inventory Pack</h3>
+              <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
                 Add 12 premium local & multinational medicines (Nexum, Flagyl, Ponstan, CAC, Surbex-Z) with pre-configured active FEFO stock batches instantly to your store catalogue.
               </p>
             </div>
@@ -249,7 +249,7 @@ export default function MedicineManager() {
               const { medicinesAdded, batchesAdded } = seedClinixInventory();
               alert(`Successfully imported Clinix Pharmacy Inventory: ${medicinesAdded} medicines and ${batchesAdded} active inventory batches are now live in the system!`);
             }}
-            className="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs transition-all cursor-pointer whitespace-nowrap shadow-md shadow-emerald-500/10"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all cursor-pointer whitespace-nowrap shadow-md shadow-emerald-600/10"
           >
             Seed Clinix Inventory
           </button>
@@ -257,14 +257,14 @@ export default function MedicineManager() {
       )}
 
       {/* Search and filter toolbar */}
-      <div className="bg-slate-800 p-4 rounded-xl border border-slate-700/40 flex flex-col md:flex-row gap-3.5 shadow-md">
+      <div className="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row gap-3.5 shadow-xs">
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700/80 rounded-lg pl-10 pr-4 py-2 text-white placeholder-slate-400 text-xs font-mono focus:outline-none focus:border-emerald-500"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-slate-800 placeholder-slate-400 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
             placeholder="Search by Brand Name, Generic Name, Company, Barcode..."
           />
         </div>
@@ -273,7 +273,7 @@ export default function MedicineManager() {
           <select
             value={dosageFilter}
             onChange={(e) => setDosageFilter(e.target.value)}
-            className="bg-slate-900 border border-slate-700 text-slate-300 rounded-lg p-2 focus:outline-none focus:border-emerald-500"
+            className="bg-slate-50 border border-slate-200 text-slate-600 rounded-xl p-2 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer text-xs"
           >
             <option value="">All Dosages</option>
             <option value="Tablet">Tablets</option>
@@ -287,7 +287,7 @@ export default function MedicineManager() {
           <select
             value={originFilter}
             onChange={(e) => setOriginFilter(e.target.value)}
-            className="bg-slate-900 border border-slate-700 text-slate-300 rounded-lg p-2 focus:outline-none focus:border-emerald-500"
+            className="bg-slate-50 border border-slate-200 text-slate-600 rounded-xl p-2 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer text-xs"
           >
             <option value="">All Origins</option>
             <option value="Pakistani">Pakistani Brands</option>
@@ -297,65 +297,65 @@ export default function MedicineManager() {
       </div>
 
       {/* Main Grid table */}
-      <div className="bg-slate-800 rounded-2xl border border-slate-700/40 shadow-xl overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-xs font-mono">
+          <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-900/50 text-slate-400 border-b border-slate-700">
-                <th className="p-3.5 font-bold uppercase tracking-wider">Drug Identity</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider">Generic Name</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider">Strength / Form</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider">Manufacturer</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider">Origin</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider">POM Rating</th>
-                <th className="p-3.5 font-bold uppercase tracking-wider text-center">Actions</th>
+              <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+                <th className="p-3.5 uppercase tracking-wider text-[10px]">Drug Identity</th>
+                <th className="p-3.5 uppercase tracking-wider text-[10px]">Generic Name</th>
+                <th className="p-3.5 uppercase tracking-wider text-[10px]">Strength / Form</th>
+                <th className="p-3.5 uppercase tracking-wider text-[10px]">Manufacturer</th>
+                <th className="p-3.5 uppercase tracking-wider text-[10px]">Origin</th>
+                <th className="p-3.5 uppercase tracking-wider text-[10px]">POM Rating</th>
+                <th className="p-3.5 text-center uppercase tracking-wider text-[10px]">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800 text-slate-300">
+            <tbody className="divide-y divide-slate-100 text-slate-600">
               {filteredMedicines.map(m => (
-                <tr key={m.id} className="hover:bg-slate-700/15 transition-all">
+                <tr key={m.id} className="hover:bg-slate-50 transition-all">
                   <td className="p-3.5 font-sans">
-                    <p className="font-bold text-white text-sm">{m.brandName}</p>
+                    <p className="font-bold text-slate-800 text-sm">{m.brandName}</p>
                     <p className="text-[10px] text-slate-400 mt-0.5 font-mono">Barcode: {m.barcode || 'N/A'}</p>
                   </td>
-                  <td className="p-3.5 font-semibold text-slate-200">{m.genericName}</td>
+                  <td className="p-3.5 font-semibold text-slate-700">{m.genericName}</td>
                   <td className="p-3.5">
-                    <span className="bg-slate-900 border border-slate-700 px-2.5 py-1 rounded text-[11px] font-bold text-emerald-400">
+                    <span className="bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded text-[11px] font-bold text-emerald-700 font-mono">
                       {m.strength}
                     </span>
-                    <span className="ml-1.5 text-slate-400 font-sans">{m.dosageForm}</span>
+                    <span className="ml-1.5 text-slate-500 font-sans">{m.dosageForm}</span>
                   </td>
-                  <td className="p-3.5 text-slate-400">{m.company}</td>
+                  <td className="p-3.5 text-slate-500">{m.company}</td>
                   <td className="p-3.5">
                     <span className={`px-2 py-0.5 rounded-full font-sans text-[10px] font-bold ${
                       m.brandOrigin === 'Multinational' 
-                        ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' 
-                        : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                        ? 'bg-blue-50 text-blue-600 border border-blue-100' 
+                        : 'bg-emerald-50 text-emerald-600 border border-emerald-100'
                     }`}>
                       {m.brandOrigin}
                     </span>
                   </td>
                   <td className="p-3.5">
                     {m.prescriptionRequired ? (
-                      <span className="text-amber-400 font-sans font-bold text-[10px] flex items-center gap-1">
-                        <AlertCircle className="h-3.5 w-3.5" /> Rx (Req)
+                      <span className="text-amber-600 font-sans font-bold text-[10px] flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 text-amber-500" /> Rx (Req)
                       </span>
                     ) : (
-                      <span className="text-slate-500 font-sans font-medium text-[10px]">OTC (General)</span>
+                      <span className="text-slate-400 font-sans font-semibold text-[10px]">OTC (General)</span>
                     )}
                   </td>
                   <td className="p-3.5 text-center">
                     <div className="flex items-center justify-center gap-1.5">
                       <button 
                         onClick={() => handleOpenEdit(m)}
-                        className="p-1.5 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 rounded transition-all cursor-pointer"
+                        className="p-1.5 text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-all cursor-pointer"
                         title="Edit Medicine details"
                       >
                         <Edit2 className="h-3.5 w-3.5" />
                       </button>
                       <button 
                         onClick={() => handleDelete(m.id)}
-                        className="p-1.5 text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded transition-all cursor-pointer"
+                        className="p-1.5 text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-lg transition-all cursor-pointer"
                         title="Soft Delete"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -367,9 +367,10 @@ export default function MedicineManager() {
 
               {filteredMedicines.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="text-center py-12 text-slate-500 font-sans">
-                    <Filter className="h-10 w-10 text-slate-600 mx-auto mb-2 opacity-30" />
-                    <p className="text-sm font-medium">No medicines match current searches.</p>
+                  <td colSpan={7} className="text-center py-12 text-slate-400 font-sans">
+                    <Filter className="h-10 w-10 text-slate-300 mx-auto mb-2 opacity-60" />
+                    <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">No Medicines Found</p>
+                    <p className="text-[10px] text-slate-400 mt-1">Try resetting search query filters.</p>
                   </td>
                 </tr>
               )}
@@ -380,38 +381,38 @@ export default function MedicineManager() {
 
       {/* MODAL 1: ADD / EDIT MEDICINE FORM */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-xl bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl p-6">
-            <div className="flex justify-between items-center border-b border-slate-700/50 pb-3 mb-5">
-              <h3 className="text-lg font-bold text-white">
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-xl bg-white rounded-2xl border border-slate-200 shadow-2xl p-6 animate-fade-in">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3 mb-5">
+              <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                 {isEditing ? 'Edit Medicine Directory Entry' : 'Register New Medicine in Database'}
               </h3>
-              <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-white cursor-pointer">
-                <X className="h-5 w-5" />
+              <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="h-4 w-4" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4 text-xs font-sans">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Brand Name *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Brand Name *</label>
                   <input
                     type="text"
                     required
                     value={formData.brandName}
                     onChange={(e) => setFormData({ ...formData, brandName: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="e.g. Panadol"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Generic Formulation *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Generic Formulation *</label>
                   <input
                     type="text"
                     required
                     value={formData.genericName}
                     onChange={(e) => setFormData({ ...formData, genericName: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="e.g. Paracetamol"
                   />
                 </div>
@@ -419,33 +420,33 @@ export default function MedicineManager() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Company / Manufacturer *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Company / Manufacturer *</label>
                   <input
                     type="text"
                     required
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="e.g. GSK"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Strength Rating *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Strength Rating *</label>
                   <input
                     type="text"
                     required
                     value={formData.strength}
                     onChange={(e) => setFormData({ ...formData, strength: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="e.g. 500mg"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Dosage Form *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Dosage Form *</label>
                   <select
                     value={formData.dosageForm}
                     onChange={(e) => setFormData({ ...formData, dosageForm: e.target.value as any })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
                   >
                     <option value="Tablet">Tablet</option>
                     <option value="Capsule">Capsule</option>
@@ -460,31 +461,31 @@ export default function MedicineManager() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Barcode ID</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Barcode ID</label>
                   <input
                     type="text"
                     value={formData.barcode}
                     onChange={(e) => setFormData({ ...formData, barcode: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="e.g. 89640001"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Therapeutic Category</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Therapeutic Category</label>
                   <input
                     type="text"
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="e.g. Analgesic"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Brand Origin</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Brand Origin</label>
                   <select
                     value={formData.brandOrigin}
                     onChange={(e) => setFormData({ ...formData, brandOrigin: e.target.value as any })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
                   >
                     <option value="Pakistani">Pakistani Brand</option>
                     <option value="Multinational">Multinational Brand</option>
@@ -492,30 +493,30 @@ export default function MedicineManager() {
                 </div>
               </div>
 
-              <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-700/40 flex items-center justify-between">
+              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <span className="font-bold text-white">Prescription Required (POM)</span>
-                  <p className="text-[10px] text-slate-400">If active, POS billing triggers safety alerts to verify medical credentials.</p>
+                  <span className="font-bold text-slate-800">Prescription Required (POM)</span>
+                  <p className="text-[10px] text-slate-500">If active, POS billing triggers safety alerts to verify medical credentials.</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={formData.prescriptionRequired}
                   onChange={(e) => setFormData({ ...formData, prescriptionRequired: e.target.checked })}
-                  className="w-5 h-5 accent-emerald-500 cursor-pointer"
+                  className="w-5 h-5 accent-emerald-600 cursor-pointer"
                 />
               </div>
 
-              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-700/50">
+              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="bg-slate-900 hover:bg-slate-700 text-slate-300 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
+                  className="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-slate-950 font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-500/10 cursor-pointer"
+                  className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/10 cursor-pointer"
                 >
                   Save to Local SQLite
                 </button>
@@ -527,54 +528,54 @@ export default function MedicineManager() {
 
       {/* MODAL 2: CSV IMPORTER */}
       {showImportModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-2xl bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl p-6 flex flex-col max-h-[85vh]">
-            <div className="flex justify-between items-center border-b border-slate-700/50 pb-3 mb-4">
-              <h3 className="text-lg font-bold text-white flex items-center gap-1.5">
-                <UploadCloud className="h-5 w-5 text-emerald-400" />
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-2xl bg-white rounded-2xl border border-slate-200 shadow-2xl p-6 flex flex-col max-h-[85vh] animate-fade-in">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+              <h3 className="text-xs font-bold text-slate-800 flex items-center gap-1.5 uppercase tracking-wider">
+                <UploadCloud className="h-4.5 w-4.5 text-emerald-600" />
                 CSV Catalog Importer
               </h3>
-              <button onClick={() => { setShowImportModal(false); setImportPreview([]); }} className="text-slate-400 hover:text-white cursor-pointer">
-                <X className="h-5 w-5" />
+              <button onClick={() => { setShowImportModal(false); setImportPreview([]); }} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="h-4 w-4" />
               </button>
             </div>
 
             <div className="space-y-4 text-xs font-sans overflow-y-auto flex-1 pr-1">
-              <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-700/40 flex justify-between items-center">
+              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex justify-between items-center">
                 <div className="space-y-0.5">
-                  <span className="font-bold text-white">Import Drug Catalog Instantly</span>
-                  <p className="text-[10px] text-slate-400">Download a template or paste rows below to populate 5,000+ medicines instantly.</p>
+                  <span className="font-bold text-slate-800">Import Drug Catalog Instantly</span>
+                  <p className="text-[10px] text-slate-500">Download a template or paste rows below to populate 5,000+ medicines instantly.</p>
                 </div>
                 <button
                   onClick={downloadSampleCSV}
-                  className="flex items-center gap-1 text-[11px] bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 px-3 py-1.5 rounded-lg cursor-pointer"
+                  className="flex items-center gap-1 text-[11px] bg-white hover:bg-slate-50 text-emerald-700 border border-slate-200 px-3 py-1.5 rounded-lg cursor-pointer font-bold"
                 >
                   <FileDown className="h-3.5 w-3.5" /> Template
                 </button>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-400 font-semibold uppercase block">Paste CSV Data Rows (Comma-Separated)</label>
+                <label className="text-slate-500 font-semibold uppercase block">Paste CSV Data Rows (Comma-Separated)</label>
                 <textarea
                   value={csvContent}
                   onChange={(e) => setCsvContent(e.target.value)}
-                  className="w-full h-32 bg-slate-900 border border-slate-700 rounded-xl p-3 text-white font-mono placeholder-slate-600 focus:outline-none focus:border-emerald-500"
+                  className="w-full h-32 bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-800 font-mono placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                   placeholder="BrandName,GenericName,Company,Strength,DosageForm,Barcode,Category,Origin,PrescriptionRequired&#10;Risek,Omeprazole,Getz,20mg,Capsule,8964000100220,Anti-Ulcerant,Pakistani,false"
                 />
               </div>
 
               <button
                 onClick={handleCSVPreview}
-                className="w-full bg-slate-900 hover:bg-slate-700 text-emerald-400 border border-slate-700/80 font-bold py-2 px-4 rounded-xl cursor-pointer"
+                className="w-full bg-slate-50 hover:bg-slate-100 text-emerald-700 border border-slate-200 font-bold py-2.5 px-4 rounded-xl cursor-pointer text-xs"
               >
                 Validate & Preview Rows
               </button>
 
               {/* Validation errors */}
               {importErrors.length > 0 && (
-                <div className="bg-rose-500/10 border border-rose-500/20 rounded-xl p-3 space-y-1">
-                  <p className="font-bold text-rose-400">Validation Errors Detected:</p>
-                  <ul className="list-disc pl-5 text-[10px] text-rose-300 space-y-0.5">
+                <div className="bg-rose-50 border border-rose-100 rounded-xl p-3 space-y-1">
+                  <p className="font-bold text-rose-700">Validation Errors Detected:</p>
+                  <ul className="list-disc pl-5 text-[10px] text-rose-600 space-y-0.5">
                     {importErrors.map((err, i) => <li key={i}>{err}</li>)}
                   </ul>
                 </div>
@@ -583,10 +584,10 @@ export default function MedicineManager() {
               {/* Preview table */}
               {importPreview.length > 0 && (
                 <div className="space-y-2">
-                  <p className="font-bold text-emerald-400 text-xs">Previewing {importPreview.length} Valid Rows:</p>
-                  <div className="border border-slate-700 rounded-lg overflow-hidden max-h-40 overflow-y-auto">
+                  <p className="font-bold text-emerald-700 text-xs">Previewing {importPreview.length} Valid Rows:</p>
+                  <div className="border border-slate-200 rounded-lg overflow-hidden max-h-40 overflow-y-auto">
                     <table className="w-full text-left text-[10px] font-mono">
-                      <thead className="bg-slate-900 text-slate-400">
+                      <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
                         <tr>
                           <th className="p-2">Brand</th>
                           <th className="p-2">Generic</th>
@@ -594,10 +595,10 @@ export default function MedicineManager() {
                           <th className="p-2 text-right">Origin</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800 text-slate-300">
+                      <tbody className="divide-y divide-slate-100 text-slate-600">
                         {importPreview.map((item, i) => (
-                          <tr key={i} className="bg-slate-900/30">
-                            <td className="p-2 font-bold text-white">{item.brandName} {item.strength}</td>
+                          <tr key={i} className="bg-white hover:bg-slate-50">
+                            <td className="p-2 font-bold text-slate-800">{item.brandName} {item.strength}</td>
                             <td className="p-2">{item.genericName}</td>
                             <td className="p-2">{item.dosageForm}</td>
                             <td className="p-2 text-right">{item.brandOrigin}</td>
@@ -610,17 +611,17 @@ export default function MedicineManager() {
               )}
             </div>
 
-            <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-700/50 mt-4">
+            <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100 mt-4">
               <button
                 onClick={() => { setShowImportModal(false); setImportPreview([]); }}
-                className="bg-slate-900 hover:bg-slate-700 text-slate-300 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
+                className="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
               >
                 Close
               </button>
               <button
                 disabled={importPreview.length === 0}
                 onClick={handleImportSave}
-                className="bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-slate-950 font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-500/10 cursor-pointer disabled:opacity-40"
+                className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/10 cursor-pointer disabled:opacity-40"
               >
                 Import Approved Rows
               </button>

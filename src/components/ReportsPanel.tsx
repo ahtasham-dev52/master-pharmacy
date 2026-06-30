@@ -128,20 +128,20 @@ export default function ReportsPanel() {
   };
 
   return (
-    <div className="space-y-6 font-sans">
+    <div className="space-y-6 font-sans text-slate-800">
       
       {/* Header with selector */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-800 p-5 rounded-2xl border border-slate-700/40 gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-5 rounded-2xl border border-slate-200 gap-4 shadow-xs">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight">Financial & Inventory Reports</h1>
-          <p className="text-slate-400 text-xs mt-0.5 font-sans">Analyze drugstore revenues, drug margins, expiring stocks, and download CSV books.</p>
+          <h1 className="text-lg font-extrabold text-slate-800 tracking-tight">Financial & Inventory Reports</h1>
+          <p className="text-slate-500 text-xs mt-0.5 font-sans">Analyze drugstore revenues, drug margins, expiring stocks, and download CSV books.</p>
         </div>
         
-        <div className="flex gap-2 text-xs">
+        <div className="flex gap-2 text-xs flex-wrap">
           <select
             value={reportType}
             onChange={(e) => setReportType(e.target.value as any)}
-            className="bg-slate-900 border border-slate-700 text-slate-300 rounded-xl p-2.5 font-bold cursor-pointer focus:outline-none focus:border-emerald-500"
+            className="bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-2.5 font-bold cursor-pointer focus:outline-none focus:ring-1 focus:ring-emerald-500 text-xs"
           >
             <option value="sales">Sales Analysis Book</option>
             <option value="profit">Product Profit Margins</option>
@@ -151,7 +151,7 @@ export default function ReportsPanel() {
           
           <button
             onClick={reportType === 'sales' ? handleExportSalesReport : handleExportInventoryReport}
-            className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer font-sans"
+            className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer font-sans shadow-sm shadow-emerald-600/10"
           >
             <FileDown className="h-4 w-4" />
             Export CSV Book
@@ -166,9 +166,9 @@ export default function ReportsPanel() {
         <div className="lg:col-span-2 space-y-6">
           
           {/* Sales chart */}
-          <div className="bg-slate-800 rounded-2xl border border-slate-700/40 p-5 space-y-4 shadow-xl">
-            <h2 className="text-sm font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 border-b border-slate-700/40 pb-3 font-sans">
-              <TrendingUp className="h-4 w-4 text-emerald-400" />
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 shadow-xs">
+            <h2 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5 border-b border-slate-100 pb-3 font-sans">
+              <TrendingUp className="h-4 w-4 text-emerald-600" />
               7-Day Sales & Profit margins Trend
             </h2>
 
@@ -177,18 +177,18 @@ export default function ReportsPanel() {
                 <AreaChart data={chartData7Days}>
                   <defs>
                     <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.2}/>
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.15}/>
                       <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                     </linearGradient>
                     <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2}/>
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15}/>
                       <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.3} />
-                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={10} />
-                  <YAxis stroke="#94a3b8" fontSize={10} />
-                  <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', color: '#fff' }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.6} />
+                  <XAxis dataKey="date" stroke="#64748b" fontSize={10} />
+                  <YAxis stroke="#64748b" fontSize={10} />
+                  <Tooltip contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '12px', color: '#1e293b' }} />
                   <Legend />
                   <Area type="monotone" dataKey="Sales" stroke="#10b981" fillOpacity={1} fill="url(#colorSales)" strokeWidth={2.5} name="Gross Sales (PKR)" />
                   <Area type="monotone" dataKey="Profit" stroke="#3b82f6" fillOpacity={1} fill="url(#colorProfit)" strokeWidth={2.5} name="Net Profit (PKR)" />
@@ -199,14 +199,14 @@ export default function ReportsPanel() {
 
           {/* Tabular Details depending on selected report */}
           {reportType === 'sales' && (
-            <div className="bg-slate-800 rounded-2xl border border-slate-700/40 shadow-xl overflow-hidden">
-              <div className="p-4 border-b border-slate-700/40">
-                <h3 className="text-sm font-bold text-white font-sans">Sales Invoice ledger</h3>
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+              <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+                <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider font-sans">Sales Invoice ledger</h3>
               </div>
               <div className="overflow-x-auto max-h-60 overflow-y-auto">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="bg-slate-900/50 text-slate-400 border-b border-slate-700">
+                    <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 text-[10px] uppercase">
                       <th className="p-3">Invoice #</th>
                       <th className="p-3">Cashier</th>
                       <th className="p-3">Customer</th>
@@ -215,20 +215,20 @@ export default function ReportsPanel() {
                       <th className="p-3 text-right">Net Paid</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800">
+                  <tbody className="divide-y divide-slate-100 text-slate-600">
                     {sales.map(s => (
-                      <tr key={s.id} className="hover:bg-slate-700/10 text-slate-300">
-                        <td className="p-3 font-bold text-white">{s.invoiceNumber}</td>
+                      <tr key={s.id} className="hover:bg-slate-50">
+                        <td className="p-3 font-bold text-slate-800">{s.invoiceNumber}</td>
                         <td className="p-3">{s.cashierName}</td>
                         <td className="p-3 font-sans">{s.customerName || 'Walk-in'}</td>
-                        <td className="p-3 text-right text-rose-400">{formatPKR(s.taxAmount)}</td>
-                        <td className="p-3 text-right text-emerald-400">-{formatPKR(s.discountAmount)}</td>
-                        <td className="p-3 text-right text-white font-bold">{formatPKR(s.netPayable)}</td>
+                        <td className="p-3 text-right text-rose-600 font-mono font-bold">{formatPKR(s.taxAmount)}</td>
+                        <td className="p-3 text-right text-emerald-600 font-mono font-bold">-{formatPKR(s.discountAmount)}</td>
+                        <td className="p-3 text-right text-slate-800 font-bold font-mono">{formatPKR(s.netPayable)}</td>
                       </tr>
                     ))}
                     {sales.length === 0 && (
                       <tr>
-                        <td colSpan={6} className="text-center py-8 text-slate-500 font-sans">No invoice transactions complete.</td>
+                        <td colSpan={6} className="text-center py-8 text-slate-400 font-sans">No invoice transactions complete.</td>
                       </tr>
                     )}
                   </tbody>
@@ -238,14 +238,14 @@ export default function ReportsPanel() {
           )}
 
           {reportType === 'profit' && (
-            <div className="bg-slate-800 rounded-2xl border border-slate-700/40 shadow-xl overflow-hidden">
-              <div className="p-4 border-b border-slate-700/40">
-                <h3 className="text-sm font-bold text-white font-sans">Medicine Profit Margins Ranking</h3>
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+              <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+                <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider font-sans">Medicine Profit Margins Ranking</h3>
               </div>
               <div className="overflow-x-auto max-h-60 overflow-y-auto">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="bg-slate-900/50 text-slate-400 border-b border-slate-700">
+                    <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 text-[10px] uppercase">
                       <th className="p-3">Medicine Brand</th>
                       <th className="p-3">Batch Number</th>
                       <th className="p-3 text-right">Cost per Unit</th>
@@ -253,16 +253,16 @@ export default function ReportsPanel() {
                       <th className="p-3 text-right">Profit Margin %</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800 text-slate-300">
+                  <tbody className="divide-y divide-slate-100 text-slate-600">
                     {batches.filter(b => !b.deletedAt).map(b => {
                       const med = medicines.find(m => m.id === b.medicineId);
                       return (
-                        <tr key={b.id} className="hover:bg-slate-700/10">
-                          <td className="p-3 font-sans font-bold text-white">{med?.brandName} {med?.strength}</td>
-                          <td className="p-3 font-bold">{b.batchNumber}</td>
-                          <td className="p-3 text-right">{formatPKR(b.purchasePrice)}</td>
-                          <td className="p-3 text-right text-emerald-400 font-bold">{formatPKR(b.sellingPrice)}</td>
-                          <td className="p-3 text-right text-emerald-300 font-bold">{b.profitMargin}%</td>
+                        <tr key={b.id} className="hover:bg-slate-50">
+                          <td className="p-3 font-sans font-bold text-slate-800">{med?.brandName} {med?.strength}</td>
+                          <td className="p-3 font-bold font-mono text-slate-500">{b.batchNumber}</td>
+                          <td className="p-3 text-right font-mono">{formatPKR(b.purchasePrice)}</td>
+                          <td className="p-3 text-right text-emerald-600 font-bold font-mono">{formatPKR(b.sellingPrice)}</td>
+                          <td className="p-3 text-right text-emerald-600 font-bold font-mono">{b.profitMargin}%</td>
                         </tr>
                       );
                     })}
@@ -276,8 +276,8 @@ export default function ReportsPanel() {
 
         {/* Right column: Category pie chart and summary indices */}
         <div className="space-y-6">
-          <div className="bg-slate-800 rounded-2xl border border-slate-700/40 p-5 shadow-xl space-y-4">
-            <h2 className="text-sm font-bold text-slate-300 uppercase tracking-wider border-b border-slate-700/40 pb-2 font-sans">
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
+            <h2 className="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 font-sans">
               Therapeutic Catalog Breakdown
             </h2>
 
@@ -302,36 +302,36 @@ export default function ReportsPanel() {
               </ResponsiveContainer>
             </div>
 
-            <div className="space-y-2 text-[10px] font-sans font-semibold">
+            <div className="space-y-2 text-[10px] font-sans font-bold">
               {categoryData.map((item, idx) => (
                 <div key={idx} className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></span>
-                    <span className="text-slate-300 truncate max-w-[120px]">{item.name}</span>
+                    <span className="text-slate-600 truncate max-w-[120px]">{item.name}</span>
                   </div>
-                  <span className="text-slate-400">{item.value} drugs registered</span>
+                  <span className="text-slate-400 font-normal">{item.value} drugs registered</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-slate-800 rounded-2xl border border-slate-700/40 p-5 shadow-xl space-y-3.5">
-            <h2 className="text-sm font-bold text-slate-300 uppercase tracking-wider border-b border-slate-700/40 pb-2 font-sans">
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3.5">
+            <h2 className="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 font-sans">
               Core Ledger Balance Indices
             </h2>
 
-            <div className="space-y-3">
-              <div className="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl border border-slate-700/30">
-                <span className="text-slate-400 font-sans">Active Cash Invoice Registers:</span>
-                <span className="font-bold text-white font-mono">{sales.filter(s => s.status === 'Completed').length}</span>
+            <div className="space-y-3 font-sans">
+              <div className="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <span className="text-slate-500 font-medium text-xs">Active Cash Invoices:</span>
+                <span className="font-extrabold text-slate-800 font-mono text-sm">{sales.filter(s => s.status === 'Completed').length}</span>
               </div>
-              <div className="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl border border-slate-700/30">
-                <span className="text-slate-400 font-sans">Drug Batches Tracked:</span>
-                <span className="font-bold text-white font-mono">{batches.filter(b => !b.deletedAt).length}</span>
+              <div className="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <span className="text-slate-500 font-medium text-xs">Drug Batches Tracked:</span>
+                <span className="font-extrabold text-slate-800 font-mono text-sm">{batches.filter(b => !b.deletedAt).length}</span>
               </div>
-              <div className="flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl border border-slate-700/30">
-                <span className="text-slate-400 font-sans">Active Distributors:</span>
-                <span className="font-bold text-white font-mono">{suppliers.filter(s => !s.deletedAt).length}</span>
+              <div className="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <span className="text-slate-500 font-medium text-xs">Active Distributors:</span>
+                <span className="font-extrabold text-slate-800 font-mono text-sm">{suppliers.filter(s => !s.deletedAt).length}</span>
               </div>
             </div>
           </div>

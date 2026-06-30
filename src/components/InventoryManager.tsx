@@ -174,21 +174,21 @@ export default function InventoryManager() {
   };
 
   return (
-    <div className="space-y-6 font-sans">
+    <div className="space-y-6 font-sans text-slate-800">
       
       {/* Header bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-800 p-5 rounded-2xl border border-slate-700/40 gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-5 rounded-2xl border border-slate-200 gap-4 shadow-xs">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight">Batch-Wise Inventory & Expiry</h1>
-          <p className="text-slate-400 text-xs mt-0.5">Track batch-wise medicinal stock using FEFO (First-Expire, First-Out) algorithms.</p>
+          <h1 className="text-lg font-extrabold text-slate-800 tracking-tight">Batch-Wise Inventory & Expiry</h1>
+          <p className="text-slate-500 text-xs mt-0.5">Track batch-wise medicinal stock using FEFO (First-Expire, First-Out) algorithms.</p>
         </div>
-        <div className="flex gap-2 text-xs">
+        <div className="flex gap-2 text-xs flex-wrap">
           <button
             onClick={() => setActiveTab('batches')}
             className={`px-4 py-2.5 rounded-xl font-bold transition-all border cursor-pointer ${
               activeTab === 'batches'
-                ? 'bg-emerald-500 text-slate-950 border-emerald-500'
-                : 'bg-slate-900 text-slate-400 border-slate-700 hover:text-white'
+                ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
             }`}
           >
             Monitor Batches
@@ -197,8 +197,8 @@ export default function InventoryManager() {
             onClick={() => setActiveTab('adjustments')}
             className={`px-4 py-2.5 rounded-xl font-bold transition-all border cursor-pointer ${
               activeTab === 'adjustments'
-                ? 'bg-emerald-500 text-slate-950 border-emerald-500'
-                : 'bg-slate-900 text-slate-400 border-slate-700 hover:text-white'
+                ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
             }`}
           >
             Audit Adjustments ({stockAdjustments.length})
@@ -210,8 +210,8 @@ export default function InventoryManager() {
                 supplierId: suppliers[0]?.id || '',
                 batchNumber: '',
                 expiryDate: '',
-                purchasePrice: 1.5,
-                sellingPrice: 2.0,
+                purchasePrice: 15,
+                sellingPrice: 20,
                 minimumStock: 150,
                 quantityBoxes: 5,
                 quantityStrips: 0,
@@ -221,7 +221,7 @@ export default function InventoryManager() {
               });
               setShowBatchModal(true);
             }}
-            className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer"
+            className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer shadow-sm shadow-emerald-600/10"
           >
             <Plus className="h-4 w-4" /> Add Batch Opening Stock
           </button>
@@ -231,54 +231,54 @@ export default function InventoryManager() {
       {activeTab === 'batches' ? (
         <>
           {/* Batches tab filter toolbar */}
-          <div className="bg-slate-800 p-4 rounded-xl border border-slate-700/40 flex flex-col md:flex-row gap-3.5 shadow-md text-xs">
+          <div className="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col lg:flex-row gap-3.5 shadow-xs text-xs">
             <div className="relative flex-1">
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700/80 rounded-lg pl-3 pr-4 py-2 text-white placeholder-slate-400 font-mono focus:outline-none focus:border-emerald-500"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-3 pr-4 py-2.5 text-slate-800 placeholder-slate-400 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 placeholder="Search Brand Name, Generic Name, Batch Number..."
               />
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-1.5 flex-wrap">
               <button
                 onClick={() => setFilterAlert('all')}
-                className={`px-3 py-1.5 rounded-lg border font-semibold ${
+                className={`px-3 py-1.5 rounded-lg border font-semibold cursor-pointer ${
                   filterAlert === 'all'
-                    ? 'bg-slate-900 border-slate-700 text-emerald-400'
-                    : 'bg-slate-950/30 border-slate-800 text-slate-400 hover:text-slate-200'
+                    ? 'bg-slate-100 border-slate-300 text-slate-800 font-bold'
+                    : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
                 }`}
               >
                 All Batches
               </button>
               <button
                 onClick={() => setFilterAlert('expired')}
-                className={`px-3 py-1.5 rounded-lg border font-semibold ${
+                className={`px-3 py-1.5 rounded-lg border font-semibold cursor-pointer ${
                   filterAlert === 'expired'
-                    ? 'bg-rose-500/10 border-rose-500/30 text-rose-400'
-                    : 'bg-slate-950/30 border-slate-800 text-slate-400 hover:text-slate-200'
+                    ? 'bg-rose-50 border-rose-200 text-rose-700 font-bold'
+                    : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
                 }`}
               >
                 Expired Stock Only
               </button>
               <button
                 onClick={() => setFilterAlert('expiring')}
-                className={`px-3 py-1.5 rounded-lg border font-semibold ${
+                className={`px-3 py-1.5 rounded-lg border font-semibold cursor-pointer ${
                   filterAlert === 'expiring'
-                    ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
-                    : 'bg-slate-950/30 border-slate-800 text-slate-400 hover:text-slate-200'
+                    ? 'bg-amber-50 border-amber-200 text-amber-700 font-bold'
+                    : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
                 }`}
               >
                 Near Expiry (60 Days)
               </button>
               <button
                 onClick={() => setFilterAlert('low_stock')}
-                className={`px-3 py-1.5 rounded-lg border font-semibold ${
+                className={`px-3 py-1.5 rounded-lg border font-semibold cursor-pointer ${
                   filterAlert === 'low_stock'
-                    ? 'bg-blue-500/10 border-blue-500/30 text-blue-400'
-                    : 'bg-slate-950/30 border-slate-800 text-slate-400 hover:text-slate-200'
+                    ? 'bg-blue-50 border-blue-200 text-blue-700 font-bold'
+                    : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
                 }`}
               >
                 Low Stock Thresholds
@@ -287,23 +287,23 @@ export default function InventoryManager() {
           </div>
 
           {/* Batches Table Grid */}
-          <div className="bg-slate-800 rounded-2xl border border-slate-700/40 shadow-xl overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs font-mono">
+              <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-slate-900/50 text-slate-400 border-b border-slate-700">
-                    <th className="p-3.5">Medicine Brand</th>
-                    <th className="p-3.5">Batch #</th>
-                    <th className="p-3.5">Expiry Date</th>
-                    <th className="p-3.5 text-right">Cost Price</th>
-                    <th className="p-3.5 text-right">Sell Price</th>
-                    <th className="p-3.5 text-right">Margin %</th>
-                    <th className="p-3.5 text-center">Available Stock breakdown</th>
-                    <th className="p-3.5 text-right">Total Units</th>
-                    <th className="p-3.5 text-center">Audit Adjust</th>
+                  <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+                    <th className="p-3.5 text-[10px] uppercase tracking-wider">Medicine Brand</th>
+                    <th className="p-3.5 text-[10px] uppercase tracking-wider">Batch #</th>
+                    <th className="p-3.5 text-[10px] uppercase tracking-wider">Expiry Date</th>
+                    <th className="p-3.5 text-right text-[10px] uppercase tracking-wider">Cost Price</th>
+                    <th className="p-3.5 text-right text-[10px] uppercase tracking-wider">Sell Price</th>
+                    <th className="p-3.5 text-right text-[10px] uppercase tracking-wider">Margin %</th>
+                    <th className="p-3.5 text-center text-[10px] uppercase tracking-wider">Available Stock Breakdown</th>
+                    <th className="p-3.5 text-right text-[10px] uppercase tracking-wider">Total Units</th>
+                    <th className="p-3.5 text-center text-[10px] uppercase tracking-wider">Audit Adjust</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800 text-slate-300">
+                <tbody className="divide-y divide-slate-100 text-slate-600">
                   {filteredBatches.map(b => {
                     const med = getMedicineInfo(b.medicineId);
                     const isLow = b.totalUnitsAvailable <= b.minimumStock;
@@ -314,43 +314,43 @@ export default function InventoryManager() {
                     const isNearExp = !isExp && new Date(b.expiryDate) <= limit;
 
                     return (
-                      <tr key={b.id} className="hover:bg-slate-700/15 transition-all">
+                      <tr key={b.id} className="hover:bg-slate-50 transition-all">
                         <td className="p-3.5 font-sans">
-                          <p className="font-bold text-white text-sm">{med?.brandName} {med?.strength}</p>
+                          <p className="font-bold text-slate-800 text-sm">{med?.brandName} {med?.strength}</p>
                           <p className="text-[10px] text-slate-400 mt-0.5 font-mono">{med?.genericName}</p>
                         </td>
-                        <td className="p-3.5 font-bold">
-                          <span className="bg-slate-900 border border-slate-800 px-2.5 py-1 rounded text-slate-300">
+                        <td className="p-3.5 font-bold font-mono">
+                          <span className="bg-slate-50 border border-slate-200 px-2.5 py-1 rounded text-slate-700">
                             {b.batchNumber}
                           </span>
                         </td>
                         <td className="p-3.5">
                           {isExp ? (
-                            <span className="text-rose-400 font-bold bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/20">
+                            <span className="text-rose-700 font-bold bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
                               Expired: {b.expiryDate}
                             </span>
                           ) : isNearExp ? (
-                            <span className="text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                            <span className="text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
                               Near Expiry: {b.expiryDate}
                             </span>
                           ) : (
-                            <span className="text-slate-300">{b.expiryDate}</span>
+                            <span className="text-slate-600 font-mono">{b.expiryDate}</span>
                           )}
                         </td>
-                        <td className="p-3.5 text-right font-bold text-white">{formatPKR(b.purchasePrice)}</td>
-                        <td className="p-3.5 text-right font-bold text-emerald-400">{formatPKR(b.sellingPrice)}</td>
-                        <td className="p-3.5 text-right text-emerald-300 font-bold">{b.profitMargin}%</td>
-                        <td className="p-3.5 text-center text-[11px] text-slate-400">
+                        <td className="p-3.5 text-right font-bold font-mono text-slate-800">{formatPKR(b.purchasePrice)}</td>
+                        <td className="p-3.5 text-right font-bold font-mono text-emerald-600">{formatPKR(b.sellingPrice)}</td>
+                        <td className="p-3.5 text-right text-emerald-600 font-bold font-mono">{b.profitMargin}%</td>
+                        <td className="p-3.5 text-center text-[11px] text-slate-500 font-mono">
                           {b.quantityBoxes} boxes • {b.quantityStrips} strips • {b.quantityUnits} loose
                         </td>
-                        <td className={`p-3.5 text-right font-bold font-mono ${isLow ? 'text-amber-400 bg-amber-500/5' : 'text-white'}`}>
+                        <td className={`p-3.5 text-right font-bold font-mono ${isLow ? 'text-amber-700 bg-amber-50' : 'text-slate-800'}`}>
                           {b.totalUnitsAvailable} units
-                          {isLow && <p className="text-[10px] text-amber-500 font-sans mt-0.5 font-bold">LOW STOCK</p>}
+                          {isLow && <p className="text-[10px] text-amber-600 font-sans mt-0.5 font-extrabold uppercase">Low Stock</p>}
                         </td>
                         <td className="p-3.5 text-center">
                           <button
                             onClick={() => handleOpenAdj(b)}
-                            className="bg-slate-900 hover:bg-slate-700 border border-slate-700 text-slate-300 px-2 py-1 rounded text-[11px] font-bold transition-all cursor-pointer"
+                            className="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer"
                           >
                             Adjust
                           </button>
@@ -361,9 +361,10 @@ export default function InventoryManager() {
 
                   {filteredBatches.length === 0 && (
                     <tr>
-                      <td colSpan={9} className="text-center py-12 text-slate-500 font-sans">
-                        <AlertTriangle className="h-10 w-10 text-slate-600 mx-auto mb-2 opacity-30" />
-                        <p className="text-sm font-medium">No batch entries monitored under current filters.</p>
+                      <td colSpan={9} className="text-center py-12 text-slate-400 font-sans">
+                        <AlertTriangle className="h-10 w-10 text-slate-300 mx-auto mb-2 opacity-60" />
+                        <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">No Batches Monitored</p>
+                        <p className="text-[10px] text-slate-400 mt-1">Try resetting filter controls.</p>
                       </td>
                     </tr>
                   )}
@@ -374,51 +375,52 @@ export default function InventoryManager() {
         </>
       ) : (
         /* Adjustments tab table */
-        <div className="bg-slate-800 rounded-2xl border border-slate-700/40 shadow-xl overflow-hidden">
-          <div className="p-4 border-b border-slate-700/40 bg-slate-800/80">
-            <h2 className="text-md font-bold text-white flex items-center gap-2">
-              <Activity className="h-5 w-5 text-emerald-400" />
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+          <div className="p-5 border-b border-slate-100 bg-white">
+            <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2 uppercase tracking-wider">
+              <Activity className="h-4.5 w-4.5 text-emerald-600" />
               SQLite Transactional Stock Adjustments Journal
             </h2>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs font-mono">
+            <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-900/50 text-slate-400 border-b border-slate-700">
-                  <th className="p-3.5">Timestamp</th>
-                  <th className="p-3.5">Medicine</th>
-                  <th className="p-3.5">Batch Reference</th>
-                  <th className="p-3.5">Adjustment Type</th>
-                  <th className="p-3.5 text-right">Quantity Change</th>
-                  <th className="p-3.5">Mandatory Audit Reason</th>
-                  <th className="p-3.5">Adjusted By</th>
+                <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+                  <th className="p-3.5 text-[10px] uppercase tracking-wider">Timestamp</th>
+                  <th className="p-3.5 text-[10px] uppercase tracking-wider">Medicine</th>
+                  <th className="p-3.5 text-[10px] uppercase tracking-wider">Batch Reference</th>
+                  <th className="p-3.5 text-[10px] uppercase tracking-wider">Adjustment Type</th>
+                  <th className="p-3.5 text-right text-[10px] uppercase tracking-wider">Quantity Change</th>
+                  <th className="p-3.5 text-[10px] uppercase tracking-wider">Mandatory Audit Reason</th>
+                  <th className="p-3.5 text-[10px] uppercase tracking-wider">Adjusted By</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800 text-slate-300">
+              <tbody className="divide-y divide-slate-100 text-slate-600">
                 {stockAdjustments.map(adj => (
-                  <tr key={adj.id} className="hover:bg-slate-700/15 transition-all">
-                    <td className="p-3.5 text-slate-400">{new Date(adj.createdAt).toLocaleString('en-PK')}</td>
-                    <td className="p-3.5 font-sans font-bold text-white">{adj.brandName}</td>
-                    <td className="p-3.5 font-bold text-slate-400">{adj.batchNumber}</td>
+                  <tr key={adj.id} className="hover:bg-slate-50 transition-all">
+                    <td className="p-3.5 text-slate-400 font-mono">{new Date(adj.createdAt).toLocaleString('en-PK')}</td>
+                    <td className="p-3.5 font-bold text-slate-800">{adj.brandName}</td>
+                    <td className="p-3.5 font-bold font-mono text-slate-500">{adj.batchNumber}</td>
                     <td className="p-3.5 font-bold uppercase text-[10px]">
-                      <span className="bg-slate-900 border border-slate-700 px-2 py-0.5 rounded text-emerald-400">
+                      <span className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded text-emerald-700 font-mono">
                         {adj.type}
                       </span>
                     </td>
-                    <td className={`p-3.5 text-right font-bold ${adj.quantityChange > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    <td className={`p-3.5 text-right font-bold font-mono ${adj.quantityChange > 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
                       {adj.quantityChange > 0 ? `+${adj.quantityChange}` : adj.quantityChange} units
                     </td>
-                    <td className="p-3.5 text-slate-300 font-sans italic">{adj.reason}</td>
-                    <td className="p-3.5 font-bold text-slate-400">{adj.adjustedBy}</td>
+                    <td className="p-3.5 text-slate-600 italic">{adj.reason}</td>
+                    <td className="p-3.5 font-bold text-slate-500">{adj.adjustedBy}</td>
                   </tr>
                 ))}
 
                 {stockAdjustments.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="text-center py-12 text-slate-500 font-sans">
-                      <LayoutList className="h-10 w-10 text-slate-600 mx-auto mb-2 opacity-30" />
-                      <p className="text-sm font-medium">No manual adjustments have been performed yet.</p>
+                    <td colSpan={7} className="text-center py-12 text-slate-400 font-sans">
+                      <LayoutList className="h-10 w-10 text-slate-300 mx-auto mb-2 opacity-60" />
+                      <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">No stock adjustments recorded</p>
+                      <p className="text-[10px] text-slate-400 mt-1">Manual edits will be detailed in this list.</p>
                     </td>
                   </tr>
                 )}
@@ -430,24 +432,24 @@ export default function InventoryManager() {
 
       {/* MODAL 1: ADD BATCH FORM */}
       {showBatchModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="w-full max-w-xl bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl p-6 my-8">
-            <div className="flex justify-between items-center border-b border-slate-700/50 pb-3 mb-4">
-              <h3 className="text-lg font-bold text-white">Add Opening Stock Batch Entry</h3>
-              <button onClick={() => setShowBatchModal(false)} className="text-slate-400 hover:text-white cursor-pointer">
-                <X className="h-5 w-5" />
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-xl bg-white rounded-2xl border border-slate-200 shadow-2xl p-6 my-8 animate-fade-in">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+              <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Add Opening Stock Batch Entry</h3>
+              <button onClick={() => setShowBatchModal(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="h-4 w-4" />
               </button>
             </div>
 
             <form onSubmit={handleBatchSubmit} className="space-y-4 text-xs font-sans">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Select Medicine *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Select Medicine *</label>
                   <select
                     required
                     value={formData.medicineId}
                     onChange={(e) => setFormData({ ...formData, medicineId: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500 font-bold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-bold cursor-pointer"
                   >
                     <option value="">-- Choose Drug --</option>
                     {medicines.filter(m => !m.deletedAt).map(m => (
@@ -456,12 +458,12 @@ export default function InventoryManager() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Select Supplier *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Select Supplier *</label>
                   <select
                     required
                     value={formData.supplierId}
                     onChange={(e) => setFormData({ ...formData, supplierId: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
                   >
                     <option value="">-- Choose Distributor --</option>
                     {suppliers.filter(s => !s.deletedAt).map(s => (
@@ -473,97 +475,97 @@ export default function InventoryManager() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Batch Number *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Batch Number *</label>
                   <input
                     type="text"
                     required
                     value={formData.batchNumber}
                     onChange={(e) => setFormData({ ...formData, batchNumber: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono font-bold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="e.g. BAT-206"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Expiry Date *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Expiry Date *</label>
                   <input
                     type="date"
                     required
                     value={formData.expiryDate}
                     onChange={(e) => setFormData({ ...formData, expiryDate: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Purchase Price / tab *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Purchase Price / tab *</label>
                   <input
                     type="number"
                     step="0.01"
                     required
                     value={formData.purchasePrice || ''}
                     onChange={(e) => setFormData({ ...formData, purchasePrice: parseFloat(e.target.value) })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="PKR cost per tablet"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Selling Price / tab *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Selling Price / tab *</label>
                   <input
                     type="number"
                     step="0.01"
                     required
                     value={formData.sellingPrice || ''}
                     onChange={(e) => setFormData({ ...formData, sellingPrice: parseFloat(e.target.value) })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="PKR sell price per tablet"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase">Minimum Stock Alert</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Minimum Stock Alert</label>
                   <input
                     type="number"
                     value={formData.minimumStock}
                     onChange={(e) => setFormData({ ...formData, minimumStock: parseInt(e.target.value) })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500"
                   />
                 </div>
               </div>
 
-              <div className="bg-slate-900 p-4 rounded-xl border border-slate-700/40 space-y-3">
-                <p className="font-bold text-white text-xs">Stock Conversion Settings</p>
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <p className="font-bold text-slate-800 text-xs">Stock Conversion Settings</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[10px] text-slate-400 uppercase font-mono">Boxes</label>
+                    <label className="text-[10px] text-slate-500 uppercase font-mono">Boxes</label>
                     <input
                       type="number"
                       value={formData.quantityBoxes}
                       onChange={(e) => setFormData({ ...formData, quantityBoxes: parseInt(e.target.value) })}
-                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white text-center font-bold font-mono"
+                      className="w-full bg-white border border-slate-200 rounded-lg p-1.5 text-slate-800 text-center font-bold font-mono focus:ring-1 focus:ring-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] text-slate-400 uppercase font-mono">Strips</label>
+                    <label className="text-[10px] text-slate-500 uppercase font-mono">Strips</label>
                     <input
                       type="number"
                       value={formData.quantityStrips}
                       onChange={(e) => setFormData({ ...formData, quantityStrips: parseInt(e.target.value) })}
-                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white text-center font-bold font-mono"
+                      className="w-full bg-white border border-slate-200 rounded-lg p-1.5 text-slate-800 text-center font-bold font-mono focus:ring-1 focus:ring-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] text-slate-400 uppercase font-mono">Loose Units</label>
+                    <label className="text-[10px] text-slate-500 uppercase font-mono">Loose Units</label>
                     <input
                       type="number"
                       value={formData.quantityUnits}
                       onChange={(e) => setFormData({ ...formData, quantityUnits: parseInt(e.target.value) })}
-                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white text-center font-bold font-mono"
+                      className="w-full bg-white border border-slate-200 rounded-lg p-1.5 text-slate-800 text-center font-bold font-mono focus:ring-1 focus:ring-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] text-slate-300 font-bold uppercase font-mono">Total Units</label>
-                    <div className="w-full py-1.5 bg-slate-950/80 border border-slate-800 rounded text-center text-emerald-400 font-bold font-mono text-sm h-9">
+                    <label className="text-[10px] text-slate-700 font-bold uppercase font-mono">Total Units</label>
+                    <div className="w-full py-1.5 bg-slate-900 border border-slate-900 rounded-lg text-center text-emerald-400 font-bold font-mono text-sm h-9">
                       {(formData.quantityBoxes * formData.stripsPerBox * formData.unitsPerStrip) + (formData.quantityStrips * formData.unitsPerStrip) + Number(formData.quantityUnits)}
                     </div>
                   </div>
@@ -571,37 +573,37 @@ export default function InventoryManager() {
 
                 <div className="grid grid-cols-2 gap-3 pt-1">
                   <div className="space-y-1">
-                    <label className="text-[10px] text-slate-400 uppercase font-mono">Strips per Box</label>
+                    <label className="text-[10px] text-slate-500 uppercase font-mono">Strips per Box</label>
                     <input
                       type="number"
                       value={formData.stripsPerBox}
                       onChange={(e) => setFormData({ ...formData, stripsPerBox: parseInt(e.target.value) })}
-                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white text-center font-mono"
+                      className="w-full bg-white border border-slate-200 rounded-lg p-1.5 text-slate-800 text-center font-mono focus:ring-1 focus:ring-emerald-500 focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] text-slate-400 uppercase font-mono">Tablets per Strip</label>
+                    <label className="text-[10px] text-slate-500 uppercase font-mono">Tablets per Strip</label>
                     <input
                       type="number"
                       value={formData.unitsPerStrip}
                       onChange={(e) => setFormData({ ...formData, unitsPerStrip: parseInt(e.target.value) })}
-                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white text-center font-mono"
+                      className="w-full bg-white border border-slate-200 rounded-lg p-1.5 text-slate-800 text-center font-mono focus:ring-1 focus:ring-emerald-500 focus:outline-none"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-700/50">
+              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowBatchModal(false)}
-                  className="bg-slate-900 hover:bg-slate-700 text-slate-300 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
+                  className="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-slate-950 font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-500/10 cursor-pointer"
+                  className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/10 cursor-pointer"
                 >
                   Save to Inventory
                 </button>
@@ -613,29 +615,29 @@ export default function InventoryManager() {
 
       {/* MODAL 2: MANUAL ADJUSTMENT FORM */}
       {showAdjModal && selectedBatchForAdj && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl p-6">
-            <div className="flex justify-between items-center border-b border-slate-700/50 pb-3 mb-4">
-              <h3 className="text-lg font-bold text-white">Manual Stock Audit Adjustment</h3>
-              <button onClick={() => { setShowAdjModal(false); setSelectedBatchForAdj(null); }} className="text-slate-400 hover:text-white cursor-pointer">
-                <X className="h-5 w-5" />
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-2xl p-6 animate-fade-in">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+              <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Manual Stock Audit Adjustment</h3>
+              <button onClick={() => { setShowAdjModal(false); setSelectedBatchForAdj(null); }} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="h-4 w-4" />
               </button>
             </div>
 
             <form onSubmit={handleAdjSubmit} className="space-y-4 text-xs font-sans">
-              <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-700/40 text-slate-300 space-y-1 font-mono text-[11px]">
-                <p>Medicine: <strong className="text-white">{getMedicineInfo(selectedBatchForAdj.medicineId)?.brandName}</strong></p>
-                <p>Batch Reference: <strong className="text-white">{selectedBatchForAdj.batchNumber}</strong></p>
-                <p>Current Quantity: <strong className="text-white">{selectedBatchForAdj.totalUnitsAvailable} base units</strong></p>
+              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-slate-600 space-y-1 font-mono text-[11px]">
+                <p>Medicine: <strong className="text-slate-800">{getMedicineInfo(selectedBatchForAdj.medicineId)?.brandName}</strong></p>
+                <p>Batch Reference: <strong className="text-slate-800">{selectedBatchForAdj.batchNumber}</strong></p>
+                <p>Current Quantity: <strong className="text-slate-800">{selectedBatchForAdj.totalUnitsAvailable} base units</strong></p>
               </div>
 
               <div className="grid grid-cols-2 gap-3.5">
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase block">Adjustment Type</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Adjustment Type</label>
                   <select
                     value={adjType}
                     onChange={(e) => setAdjType(e.target.value as any)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
                   >
                     <option value="Correction">Correction</option>
                     <option value="Lost/Missing Stock">Lost/Missing Stock</option>
@@ -646,40 +648,40 @@ export default function InventoryManager() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-slate-400 font-semibold uppercase block">Quantity Change *</label>
+                  <label className="text-slate-500 font-semibold uppercase block">Quantity Change *</label>
                   <input
                     type="number"
                     required
                     value={adjQtyChange}
                     onChange={(e) => setAdjQtyChange(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     placeholder="Positive (+) or negative (-)"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-400 font-semibold uppercase block">Mandatory Audit Reason *</label>
+                <label className="text-slate-500 font-semibold uppercase block">Mandatory Audit Reason *</label>
                 <textarea
                   required
                   value={adjReason}
                   onChange={(e) => setAdjReason(e.target.value)}
-                  className="w-full h-20 bg-slate-900 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full h-20 bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                   placeholder="e.g. Physical inventory check revealed discrepancies in tablet counting."
                 />
               </div>
 
-              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-700/50">
+              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => { setShowAdjModal(false); setSelectedBatchForAdj(null); }}
-                  className="bg-slate-900 hover:bg-slate-700 text-slate-300 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
+                  className="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-slate-950 font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-500/10 cursor-pointer"
+                  className="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/10 cursor-pointer"
                 >
                   Commit Adjustment
                 </button>
